@@ -61,7 +61,7 @@ namespace tmx
 	class TMX_EXPORT_API LayerSet final : public sf::Drawable
 	{
 		friend class TileQuad;
-	public:	
+	public:
 
 		LayerSet(const sf::Texture& texture, sf::Uint8 patchSize, const sf::Vector2u& mapSize, const sf::Vector2u tileSize);
 		TileQuad* addTile(sf::Vertex vt0, sf::Vertex vt1, sf::Vertex vt2, sf::Vertex vt3, sf::Uint16 x, sf::Uint16 y);

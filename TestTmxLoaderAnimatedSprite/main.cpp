@@ -91,6 +91,66 @@ namespace
         }
 	}
 
+	// Test testInteraction
+	bool testInteraction(std::vector<tmx::MapLayer>& layersToCheck)
+	{
+		for(auto& layerInd : layersToCheck){
+			printf(" Layer: %s  (", layerInd.name.c_str());
+			switch (layerInd.type)
+			{
+			case tmx::Layer:
+				printf("Layer)\r\n");
+				break;
+
+			case tmx::ObjectGroup:
+				printf("ObjectGroup)\r\n");
+				for(auto& obj : layerInd.objects){
+					printf("Object : %s (%0.2f,%0.2f)\r\n",
+								obj.getName().c_str(),
+								obj.getCentre().x,
+								obj.getCentre().y);
+				}
+				break;
+
+			case tmx::ImageLayer:
+				printf("ImageLayer)\r\n");
+				break;
+
+			default:
+				printf("Default)\r\n");
+				break;
+			}
+
+//			if(layerInd.type == tmx::ObjectGroup){
+//				for(auto& obj : layerInd.objects){
+
+//					// Collisions
+//					if(layerInd.name == "solidObject"){
+//						for(auto& point : player.collisionPoints){
+//							if(obj.contains(player.position + point)){
+//								//handle collision
+//							   break; //don't test more points than you need
+//							}
+//						}
+//					}
+//
+//					// Action
+//					else if(layerInd.name == "trigger"){
+//						//send trigger command to queue
+//					}
+//
+//					// Terrain Modification
+//					else if(layerInd.name == "terrainModif"){
+//						//send trigger command to queue
+//					}
+//
+//				}
+//			}
+
+		}
+		return true;
+	}
+
 	sf::Vector2f centerScrolling(sf::Vector2u& actualMapSize,
 								sf::View& actualView,
 								sf::Vector2f cameraInhibition,
@@ -213,9 +273,14 @@ int main()
     // Create map loader and load map
 	//-------------------------------
     tmx::MapLoader ml("maps/");
-//    ml.load("desert2.tmx");
     ml.load("map4.tmx");
     sf::Vector2u mapSize = ml.getMapSize();
+    std::vector<tmx::MapLayer>& layers = ml.getLayers();
+
+
+
+	// Temp
+	testInteraction(layers);
 
     sf::Clock deltaClock, frameClock;
 

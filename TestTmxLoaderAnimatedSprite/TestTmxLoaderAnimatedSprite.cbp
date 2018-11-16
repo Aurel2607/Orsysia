@@ -73,8 +73,8 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
-					<Add directory="../divers/SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/include" />
-					<Add directory="../divers/sfml-tmxloader-master/sfml-tmxloader-master/include" />
+					<Add directory="../SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/include" />
+					<Add directory="../sfml-tmxloader-master/sfml-tmxloader-master/include" />
 					<Add directory="CPlayer" />
 				</Compiler>
 				<Linker>
@@ -83,8 +83,8 @@
 					<Add library="sfml-window" />
 					<Add library="sfml-system" />
 					<Add library="tmx-loader" />
-					<Add directory="../divers/SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/lib" />
-					<Add directory="../divers/sfml-tmxloader-master/sfml-tmxloader-master/build/Release" />
+					<Add directory="../SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/lib" />
+					<Add directory="../sfml-tmxloader-master/sfml-tmxloader-master/build/Release" />
 					<Add directory="C:/Program Files (x86)/CodeBlocks/MinGW/bin" />
 				</Linker>
 			</Target>
