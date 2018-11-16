@@ -25,6 +25,8 @@
 					<Add directory="../divers/SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/include" />
 					<Add directory="../divers/sfml-tmxloader-master/sfml-tmxloader-master/include" />
 					<Add directory="CPlayer" />
+					<Add directory="CGame" />
+					<Add directory="CMap" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics-d" />
@@ -54,6 +56,8 @@
 					<Add directory="../divers/SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/include" />
 					<Add directory="../divers/sfml-tmxloader-master/sfml-tmxloader-master/include" />
 					<Add directory="CPlayer" />
+					<Add directory="CGame" />
+					<Add directory="CMap" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -76,6 +80,8 @@
 					<Add directory="../SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/include" />
 					<Add directory="../sfml-tmxloader-master/sfml-tmxloader-master/include" />
 					<Add directory="CPlayer" />
+					<Add directory="CGame" />
+					<Add directory="CMap" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -93,6 +99,10 @@
 		<Unit filename="AnimatedSprite/AnimatedSprite.h" />
 		<Unit filename="AnimatedSprite/Animation.cpp" />
 		<Unit filename="AnimatedSprite/Animation.h" />
+		<Unit filename="CGame/Game.cpp" />
+		<Unit filename="CGame/Game.h" />
+		<Unit filename="CMap/Map.cpp" />
+		<Unit filename="CMap/Map.h" />
 		<Unit filename="CPlayer/Player.cpp" />
 		<Unit filename="CPlayer/Player.h" />
 		<Unit filename="main.cpp" />

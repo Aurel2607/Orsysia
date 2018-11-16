@@ -1997,3 +1997,96 @@
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 
+1542384285 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
+	"Game.h"
+
+1542384285 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
+	<tmx/MapLoader.hpp>
+	<tmx/Log.hpp>
+	"Player.h"
+
+1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\maploader.hpp
+	<tmx/QuadTreeNode.hpp>
+	<tmx/MapLayer.hpp>
+	<pugixml/pugixml.hpp>
+	<array>
+	<cassert>
+	<bitset>
+
+1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\quadtreenode.hpp
+	<tmx/MapObject.hpp>
+	<memory>
+
+1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\mapobject.hpp
+	<tmx/Helpers.hpp>
+	<tmx/DebugShape.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Font.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/Graphics/RectangleShape.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/Text.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<string>
+	<vector>
+	<map>
+	<iostream>
+	<memory>
+
+1541758731 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\helpers.hpp
+	<SFML/Graphics/Rect.hpp>
+	<SFML/System/Vector2.hpp>
+	<cmath>
+	<cassert>
+
+1541519571 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\debugshape.hpp
+	<tmx/Export.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+
+1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\export.hpp
+
+1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\maplayer.hpp
+	<tmx/MapObject.hpp>
+	<tmx/Export.hpp>
+	<memory>
+	<array>
+
+1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\pugixml\pugixml.hpp
+	"pugiconfig.hpp"
+	<stddef.h>
+	<exception>
+	<iterator>
+	<iosfwd>
+	<string>
+
+1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\pugixml\pugiconfig.hpp
+
+1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\log.hpp
+	<tmx/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<string>
+	<iostream>
+	<fstream>
+	<Windows.h>
+
+1542384303 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\main.cpp
+	"Game.h"
+	<tmx/MapLoader.hpp>
+	<tmx/Log.hpp>
+	"Player.h"
+	<sstream>
+	<cassert>
+	"main.h"
+
+1542383797 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.cpp
+	"Map.h"
+
+1542383779 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.h
+

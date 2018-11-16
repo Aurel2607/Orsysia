@@ -27,6 +27,7 @@ it freely, subject to the following restrictions:
    source distribution.
 *********************************************************************/
 
+#include "Game.h"
 #include <tmx/MapLoader.hpp>
 #include <tmx/Log.hpp>
 #include "Player.h"
@@ -37,24 +38,6 @@ it freely, subject to the following restrictions:
 //-----------------------------------------------------------------------------
 namespace
 {
-	sf::Vector2f getViewMovement(float dt)
-	{
-		sf::Vector2f movement;
-
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			movement.x = -1.f;
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			movement.x = 1.f;
-
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			movement.y = -1.f;
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			movement.y = 1.f;
-
-		movement = Helpers::Vectors::normalize(movement) * 500.f * dt;
-		return movement;
-	}
-
 	bool handleWindowEvent(sf::RenderWindow& renderWindow, CPlayer& player)
 	{
 		static bool key_O_StilPressed = false;
@@ -87,8 +70,7 @@ namespace
                 (key_O_StilPressed == true)) {
                 key_O_StilPressed = false;
             }
-
-        }
+		}
 	}
 
 	// Test testInteraction
@@ -224,6 +206,8 @@ namespace
 
 int main()
 {
+	CGame orsysiaGame;
+
 	int cpt_intersection = 0;
 	int cpt_mapGetLimitReachedStatus = 0;
 
@@ -292,6 +276,7 @@ int main()
     bool noKeyWasPressed = true;
     while(renderWindow.isOpen())
     {
+        orsysiaGame.loopFn();
         handleWindowEvent(renderWindow, nunPlayer);
 
 		sf::Event event;
@@ -362,6 +347,9 @@ int main()
 							+ " y:" + (std::to_string(nunPlayer.getPosition().y)).substr(0,5));
         fpsText.move(cameraMovement);
 
+
+        ml.updateQuadTree(sf::FloatRect(0.f, 0.f, 800.f, 600.f));
+
         //draw
         renderWindow.clear();
         renderWindow.draw(ml);
@@ -370,6 +358,7 @@ int main()
         renderWindow.draw(fpsText);
         renderWindow.draw(playerLimitRectangle);
         renderWindow.draw(cameraInhibitionRectShape);
+        ml.drawLayer(renderWindow, tmx::MapLayer::Debug);//draw with debug information shown
         renderWindow.display();
     }
 
