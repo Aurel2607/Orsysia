@@ -97,31 +97,29 @@ void CGame::processEvents(void)
 		if(event.type == sf::Event::Closed)
 			m_renderWindow.close();
 
-		if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-			m_renderWindow.close();
+		// Key pressed
+		if(event.type == sf::Event::KeyPressed){
+			switch (event.key.code)
+			{
+			case sf::Keyboard::Escape:
+				m_renderWindow.close();
+				break;
 
-		// Gestion de l'appuie touche O (bascule keyPressed/keyReleased)
-		if ((event.type == sf::Event::KeyPressed) &&
-			(event.key.code == sf::Keyboard::O) &&
-			(key_O_StilPressed == false)){
-			printf(" sf::Event::KeyPressed::O \r\n");
-			m_nunPlayer.toggleEyes();
-			key_O_StilPressed = true;
+			default:
+				break;
+			}
 		}
 
-		// Gestion de l'appuie touche O (bascule keyPressed/keyReleased)
-		if ((event.type == sf::Event::KeyReleased) &&
-			(event.key.code == sf::Keyboard::O) &&
-			(key_O_StilPressed == true)) {
-			key_O_StilPressed = false;
-		}
-
+		// Key released
 		if(event.type == sf::Event::KeyReleased){
 			switch(event.key.code){
-				case sf::Keyboard::D:
-					m_showDebug = !m_showDebug;
-					break;
-				default: break;
+			case sf::Keyboard::D:
+				m_showDebug = !m_showDebug;
+				break;
+			case sf::Keyboard::O:
+				m_nunPlayer.toggleEyes();
+				break;
+			default: break;
 			}
 		}
 	}
