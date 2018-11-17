@@ -36,49 +36,12 @@ it freely, subject to the following restrictions:
 #include "main.h"
 
 //-----------------------------------------------------------------------------
-namespace
-{
-
-}
 
 int main()
 {
 	CGame orsysiaGame("ORSYSIA", "maps/", "map4.tmx");
 
 	orsysiaGame.run();
-
-    while(renderWindow.isOpen())
-    {
-
-
-
-		// update Player
-		nunPlayer.update(frameTime2);
-        playerLimitRectangle.move(playerMovement  * frameTime.asSeconds());
-
-        // Display HUD (fps, player position)
-		sf::RectangleShape background(sf::Vector2f((fpsText.getGlobalBounds().width + 10), (fpsText.getGlobalBounds().height +10)));
-		background.setFillColor(sf::Color::Black);
-        float fpsCount = (1.f / frameTime2.asSeconds());
-        fpsText.setString( 	"FPS:" + (std::to_string(fpsCount)).substr(0,5)
-							+ " x:" + (std::to_string(nunPlayer.getPosition().x)).substr(0,5)
-							+ " y:" + (std::to_string(nunPlayer.getPosition().y)).substr(0,5));
-        fpsText.move(cameraMovement);
-
-
-        ml.updateQuadTree(sf::FloatRect(0.f, 0.f, 800.f, 600.f));
-
-        //draw
-        renderWindow.clear();
-        renderWindow.draw(ml);
-		renderWindow.draw(nunPlayer);
-		renderWindow.draw(background, fpsText.getTransform());
-        renderWindow.draw(fpsText);
-        renderWindow.draw(playerLimitRectangle);
-        renderWindow.draw(cameraInhibitionRectShape);
-        ml.drawLayer(renderWindow, tmx::MapLayer::Debug);//draw with debug information shown
-        renderWindow.display();
-    }
 
     return 0;
 }

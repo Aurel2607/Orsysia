@@ -10,15 +10,23 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileN
 	m_mapFileName(mapFileName),
 	m_mapLoader(m_mapPathName),
 	m_layers(m_mapLoader.getLayers()),
-	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions)(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10))),
+	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions),
+//TODO: Retrouver à qui ca appartient??
+//	(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10))),
 	m_playerMovement(0.f, 0.f)
 {
-	//set the debugging output mode
-	tmx::setLogLevel(tmx::Logger::Info | tmx::Logger::Error);
+
+
+    // Create map loader and load map
+	//-------------------------------
+	tmx::setLogLevel(tmx::Logger::Info | tmx::Logger::Error);//set the debugging output mode
+    m_mapLoader.load(m_mapFileName);
 
 	// m_renderWindow late init
 	//--------------------------
-	m_renderWindow.setFramerateLimit(60);(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)))
+	m_renderWindow.setFramerateLimit(60);
+//TODO: Retrouver à qui ca appartient??
+//	(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)))
 
 	// HUD Initialisation  //TODO (Aurel#1#): Ajouter à la Classe CHud
 	//--------------------------
@@ -28,9 +36,9 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileN
 	}
 	m_hudText.setFont(m_hudFont);
 	m_hudText.setColor(sf::Color::White);
+	m_hudText.setFillColor(sf::Color::Black);
 	m_hudText.setCharacterSize(14);
 	m_hudBG.setSize(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)));
-
 
 	// Player limit Rectangle  // TODO (Aurel#1#): A bouger dans la classe CPlayer
 	//------------------------
@@ -62,7 +70,7 @@ CGame::~CGame()
 void CGame::run(void)
 {
 	//TEMP
-	testInteraction();
+	testInteraction(m_layers);
 
 	while(m_renderWindow.isOpen() == true)
 	{
@@ -113,7 +121,7 @@ void CGame::processEvents(void)
 		}
 	}
 
-	m_playerMovement(0.f,0.f);
+	m_playerMovement = sf::Vector2f(0.f,0.f);
 
 	// if a key was pressed set the correct animation and move correctly
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
@@ -163,15 +171,26 @@ void CGame::update()
 	}else{
 		//On gère le scrolling
 		sf::View view = m_renderWindow.getView();
-		cameraMovement = centerScrolling(	mapSize,
+		cameraMovement = centerScrolling(	m_mapLoader.getMapSize(),
 											view,
-											m_cameraInhibitionSize,
 											m_cameraInhibitionRectShape,
-											nunPlayer);
-		renderWindow.setView(view);
+											m_nunPlayer);
+		m_renderWindow.setView(view);
 	}
 
-	noKeyWasPressed = true;
+	m_noKeyWasPressed = true;
+
+	// update Player
+	m_nunPlayer.update(frameTime);
+	m_playerLimitRectShape.move(m_playerMovement  * frameTime.asSeconds());
+
+	// Display HUD (fps, player position)
+	float fpsCount = (1.f / frameTime.asSeconds());
+	m_hudText.setString( 	"FPS:" + (std::to_string(fpsCount)).substr(0,5)
+						+ " x:" + (std::to_string(m_nunPlayer.getPosition().x)).substr(0,5)
+						+ " y:" + (std::to_string(m_nunPlayer.getPosition().y)).substr(0,5));
+	m_hudText.move(cameraMovement);
+
 
 }
 
@@ -257,7 +276,7 @@ bool CGame::testInteraction(std::vector<tmx::MapLayer>& layersToCheck)
 
 // TODO (Aurel#1#): A deplacer dans la classe CMap ou CCamera???
 
-sf::Vector2f CGame::centerScrolling(sf::Vector2u& actualMapSize,
+sf::Vector2f CGame::centerScrolling(const sf::Vector2u& actualMapSize,
 									sf::View& actualView,
 									sf::RectangleShape&  camInhibitRectShp,
 									CPlayer& player)

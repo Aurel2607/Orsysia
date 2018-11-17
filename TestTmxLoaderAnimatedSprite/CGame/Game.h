@@ -62,7 +62,7 @@ private:
 	void update(void);
 	void render(void);
 	bool testInteraction(std::vector<tmx::MapLayer>& layersToCheck);
-	sf::Vector2f centerScrolling(sf::Vector2u& actualMapSize,
+	sf::Vector2f centerScrolling(const sf::Vector2u& actualMapSize,
 								sf::View& actualView,
 								sf::RectangleShape&  cameraInhibitionRectangleShape,
 								CPlayer& player);
