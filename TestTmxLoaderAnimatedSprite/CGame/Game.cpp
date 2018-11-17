@@ -1,49 +1,51 @@
 #include "Game.h"
 
+// Ctor
 CGame::CGame():
-	m_showDebug(false)
+	m_screenDimensions(SCREEN_WIDTH, SCREEN_HEIGHT),
+	m_renderWindow(sf::VideoMode(m_screenDimensions.x, m_screenDimensions.y), "ORSYSIA"),
+	m_showDebug(false),
+	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions)
 {
-	//ctor
 }
 
+// Dtor
 CGame::~CGame()
 {
-	//dtor
 }
 
 
-void CGame::loopFn(void)
+void CGame::run(void)
 {
-
-
+	while(m_renderWindow.isOpen() == true)
+	{
+		processEvents();
+		update();
+		render();
+	}
 }
 
 
 
-bool CGame::handleWindowEvent(sf::RenderWindow& renderWindow, CPlayer& player)
+void CGame::processEvents(void)
 {
 	static bool key_O_StilPressed = false;
 	sf::Event event;
-	while(renderWindow.pollEvent(event)){
+	while(m_renderWindow.pollEvent(event))
+	{
 		if(event.type == sf::Event::Closed)
-			renderWindow.close();
+			m_renderWindow.close();
+
 		if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-			renderWindow.close();
+			m_renderWindow.close();
 
 		// Gestion de l'appuie touche O (bascule keyPressed/keyReleased)
 		if ((event.type == sf::Event::KeyPressed) &&
 			(event.key.code == sf::Keyboard::O) &&
-			(key_O_StilPressed == false))
-		{
+			(key_O_StilPressed == false)){
 			printf(" sf::Event::KeyPressed::O \r\n");
-//				player.toggleEyes();
-			if(player.isEyesOpened() == true)
-				player.setEyesOpened(false);
-			else
-				player.setEyesOpened(true);
-
+			m_nunPlayer.toggleEyes();
 			key_O_StilPressed = true;
-			return true;
 		}
 
 		// Gestion de l'appuie touche O (bascule keyPressed/keyReleased)
@@ -54,13 +56,28 @@ bool CGame::handleWindowEvent(sf::RenderWindow& renderWindow, CPlayer& player)
 		}
 
 		if(event.type == sf::Event::KeyReleased){
-			switch(event.key.code)
-			{
-			case sf::Keyboard::D:
-				m_showDebug = !m_showDebug;
-				break;
-			default: break;
+			switch(event.key.code){
+				case sf::Keyboard::D:
+					m_showDebug = !m_showDebug;
+					break;
+				default: break;
 			}
 		}
    }
 }
+
+
+void CGame::update()
+{
+
+
+}
+
+
+void CGame::render()
+{
+
+}
+
+
+

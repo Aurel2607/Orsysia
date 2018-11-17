@@ -18,7 +18,7 @@ class CMap
 
 	tmx::MapLoader 				m_mapLoader;
 	sf::Vector2u 				m_size;
-	std::vector<tmx::MapLayer>& m_layers;
+//	std::vector<tmx::MapLayer>& m_layers;
 };
 
 #endif // CMAP_H

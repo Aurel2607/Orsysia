@@ -211,7 +211,7 @@ int main()
 	int cpt_intersection = 0;
 	int cpt_mapGetLimitReachedStatus = 0;
 
-	sf::Vector2f playerPos;
+//	sf::Vector2f playerPos;
 
 
     sf::Vector2f screenDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -276,7 +276,7 @@ int main()
     bool noKeyWasPressed = true;
     while(renderWindow.isOpen())
     {
-        orsysiaGame.loopFn();
+//        orsysiaGame.loopFn();
         handleWindowEvent(renderWindow, nunPlayer);
 
 		sf::Event event;
