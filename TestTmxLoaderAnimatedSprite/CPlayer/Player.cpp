@@ -15,7 +15,7 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
 	// Load Texture
 	if (!m_texture1.loadFromFile(spriteSheet)){
 		printf("Failed to load player spritesheet %s!\r\n", spriteSheet.c_str() );
-		// TODO: Throw???
+		// TODO (Aurel#1#): Throw???
 	}
 
 	// Set current animation

@@ -1667,7 +1667,7 @@
 1542450802 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animation.cpp
 	"Animation.h"
 
-1542450802 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
+1542458733 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
 	"Player.h"
 
 1542450802 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.h
@@ -1997,10 +1997,10 @@
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 
-1542384285 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
+1542457701 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
 	"Game.h"
 
-1542454305 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
+1542457679 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
@@ -2079,7 +2079,7 @@
 	<fstream>
 	<Windows.h>
 
-1542454238 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\main.cpp
+1542457590 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\main.cpp
 	"Game.h"
 	<tmx/MapLoader.hpp>
 	<tmx/Log.hpp>
