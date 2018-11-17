@@ -20,13 +20,16 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileN
     // Create map loader and load map
 	//-------------------------------
 	tmx::setLogLevel(tmx::Logger::Info | tmx::Logger::Error);//set the debugging output mode
-    m_mapLoader.load(m_mapFileName);
+    if (!m_mapLoader.load(m_mapFileName)){
+		printf("CGame::CGame - map %s/%s not found\r\n",
+				m_mapPathName.c_str(),
+				m_mapFileName.c_str());
+		throw;// TODO (Aurel#1#): Verifier throw comme erreur de retour CTOR
+	}
 
 	// m_renderWindow late init
 	//--------------------------
 	m_renderWindow.setFramerateLimit(60);
-//TODO: Retrouver à qui ca appartient??
-//	(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)))
 
 	// HUD Initialisation  //TODO (Aurel#1#): Ajouter à la Classe CHud
 	//--------------------------
@@ -36,9 +39,11 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileN
 	}
 	m_hudText.setFont(m_hudFont);
 	m_hudText.setColor(sf::Color::White);
-	m_hudText.setFillColor(sf::Color::Black);
 	m_hudText.setCharacterSize(14);
 	m_hudBG.setSize(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)));
+	m_hudBG.setFillColor(sf::Color::Black);
+//TODO: Retrouver à qui ca appartient??
+//	(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)))
 
 	// Player limit Rectangle  // TODO (Aurel#1#): A bouger dans la classe CPlayer
 	//------------------------
@@ -164,6 +169,7 @@ void CGame::update()
 	m_nunPlayer.play();
 	m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
 
+	// update View
 	sf::Vector2f cameraMovement(0.f, 0.f);
 	// if no key was pressed stop the animation
 	if (m_noKeyWasPressed) {
@@ -184,12 +190,14 @@ void CGame::update()
 	m_nunPlayer.update(frameTime);
 	m_playerLimitRectShape.move(m_playerMovement  * frameTime.asSeconds());
 
-	// Display HUD (fps, player position)
+	// update HUD (fps, player position)
 	float fpsCount = (1.f / frameTime.asSeconds());
 	m_hudText.setString( 	"FPS:" + (std::to_string(fpsCount)).substr(0,5)
 						+ " x:" + (std::to_string(m_nunPlayer.getPosition().x)).substr(0,5)
 						+ " y:" + (std::to_string(m_nunPlayer.getPosition().y)).substr(0,5));
 	m_hudText.move(cameraMovement);
+	m_hudBG.setSize(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)));
+
 
 
 }

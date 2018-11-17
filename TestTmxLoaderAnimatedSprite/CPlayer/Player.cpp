@@ -191,10 +191,9 @@ void CPlayer::setEyesOpened(bool eyesOpen)
 
 void CPlayer::toggleEyes(void)
 {
-	bool valToSet(false);
 	m_isEyesOpened = !m_isEyesOpened;
 	printf("CPlayer::toggleEyes: m_isEyesOpened=%d\r\n", m_isEyesOpened );
-	setEyesOpened(valToSet);
+	setEyesOpened(m_isEyesOpened);
 }
 
 bool CPlayer::isEyesOpened(void)
