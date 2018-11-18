@@ -26,8 +26,8 @@ public:
     void stop();
     void move(sf::Vector2f movement);
     void update(sf::Time time);
- 	void setDirection(direction);
- 	direction getDirection(void);
+ 	void setDirection(direction_t);
+ 	direction_t getDirection(void);
 
 protected:
     int m_playerWidth;
@@ -48,8 +48,8 @@ protected:
 //							Player Apparence
 //-----------------------------------------------------------------------------
 private:
-	direction 	m_direction;
-	bool 		m_directionHasChanged;
+	direction_t 	m_direction;
+	bool 			m_directionHasChanged;
 
     void setUpAnimation(int playerWidth,    int playerWidthOffset,
                         int playerHeight,   int playerHeightOffset,

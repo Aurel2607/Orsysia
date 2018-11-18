@@ -132,28 +132,28 @@ void CGame::processEvents(void)
 			m_playerMovement.y -= m_nunPlayer.getSpeed();
 		}
 		m_noKeyWasPressed = false;
-		m_nunPlayer.setDirection(direction::up);
+		m_nunPlayer.setDirection(direction_t::up);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))	{
 		if((m_nunPlayer.getPosition().y + m_nunPlayer.getSize().y) < static_cast<float>(m_mapLoader.getMapSize().y)){
 			m_playerMovement.y += m_nunPlayer.getSpeed();
 		}
 		m_noKeyWasPressed = false;
-		m_nunPlayer.setDirection(direction::down);
+		m_nunPlayer.setDirection(direction_t::down);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))	{
 		if(m_nunPlayer.getPosition().x > 0){
 			m_playerMovement.x -= m_nunPlayer.getSpeed();
 		}
 		m_noKeyWasPressed = false;
-		m_nunPlayer.setDirection(direction::left);
+		m_nunPlayer.setDirection(direction_t::left);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		if((m_nunPlayer.getPosition().x + m_nunPlayer.getSize().x) < static_cast<float>(m_mapLoader.getMapSize().x)){
 			m_playerMovement.x += m_nunPlayer.getSpeed();
 		}
 		m_noKeyWasPressed = false;
-		m_nunPlayer.setDirection(direction::right);
+		m_nunPlayer.setDirection(direction_t::right);
 	}
 
 
@@ -165,7 +165,7 @@ void CGame::update()
 	sf::Time frameTime = m_frameClock.restart();
 
 	m_nunPlayer.play();
-	m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
+
 
 	// update View
 	sf::Vector2f cameraMovement(0.f, 0.f);
@@ -173,8 +173,30 @@ void CGame::update()
 	if (m_noKeyWasPressed) {
 		m_nunPlayer.stop();
 	}else{
-		//On gère le scrolling
 		sf::View view = m_renderWindow.getView();
+		// Pour tous les objets de la couche colision
+			// Tester si les boites englobantes se touchent
+
+
+
+
+
+		if(m_mapLoader.quadTreeAvailable() == true){
+			printf("m_mapLoader.quadTreeAvailable() == true\r\n");
+			// Build quad tree by querying visible region
+			// TODO (Aurel#1#): Reduce the quadtree area update, kind of "around the player area"
+			m_mapLoader.updateQuadTree(view.getViewport());
+
+			//NOTE quad tree MUST be updated before attempting to query it
+			sf::FloatRect playerFuturMvtRect(m_playerMovement + m_nunPlayer.getPosition(), m_nunPlayer.getSize());
+			std::vector<tmx::MapObject*> objects = m_mapLoader.queryQuadTree(playerFuturMvtRect);
+
+		}else{
+			printf("no m_mapLoader.quadTreeAvailable() available -- bouhhhh!!\r\n");
+		}
+
+		m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
+		//On gère le scrolling
 		cameraMovement = centerScrolling(	m_mapLoader.getMapSize(),
 											view,
 											m_cameraInhibitionRectShape,
@@ -248,35 +270,41 @@ bool CGame::testInteraction(std::vector<tmx::MapLayer>& layersToCheck)
 			printf("Default)\r\n");
 			break;
 		}
-
-//			if(layerInd.type == tmx::ObjectGroup){
-//				for(auto& obj : layerInd.objects){
-
-//					// Collisions
-//					if(layerInd.name == "solidObject"){
-//						for(auto& point : player.collisionPoints){
-//							if(obj.contains(player.position + point)){
-//								//handle collision
-//							   break; //don't test more points than you need
-//							}
-//						}
-//					}
-//
-//					// Action
-//					else if(layerInd.name == "trigger"){
-//						//send trigger command to queue
-//					}
-//
-//					// Terrain Modification
-//					else if(layerInd.name == "terrainModif"){
-//						//send trigger command to queue
-//					}
-//
-//				}
-//			}
-
 	}
 	return true;
+}
+
+// Test testInteraction
+CGame::interractionType_t CGame::testInteraction2(	std::vector<tmx::MapLayer>& layersToCheck,
+													CPlayer& player)
+{
+	for(auto& layerInd : layersToCheck){
+		if(layerInd.type == tmx::ObjectGroup){
+			for(auto& obj : layerInd.objects){
+				// Collisions
+				if(layerInd.name == "solidObject"){
+					for(auto& point : player.collisionPoints){
+						if(obj.contains(player.position + point)){
+							//handle collision
+						   break; //don't test more points than you need
+						}
+					}
+					return interractionType_t::colision;
+				}
+
+				// Trigger
+				if(layerInd.name == "trigger"){
+					//send trigger command to queue
+					return interractionType_t::warp;
+				}
+
+				// Terrain Modification
+				if(layerInd.name == "terrainModif"){
+					return interractionType_t::terain;
+				}
+			}
+		}
+	}
 }
 
 

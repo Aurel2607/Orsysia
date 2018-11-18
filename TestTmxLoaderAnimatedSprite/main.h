@@ -18,7 +18,7 @@ const int CAMERA_INHIBITION_HEIGHT = 200;
 
 
 
-enum direction{
+enum direction_t{
 	up=0,
 	down,
 	left,

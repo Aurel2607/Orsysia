@@ -62,6 +62,17 @@ private:
 	void update(void);
 	void render(void);
 	bool testInteraction(std::vector<tmx::MapLayer>& layersToCheck);
+
+private:
+	enum interractionType_t{
+		colision = 0,
+		warp,
+		terain
+	};
+
+private:
+	interractionType_t testInteraction2(	std::vector<tmx::MapLayer>& layersToCheck,
+							CPlayer& player);
 	sf::Vector2f centerScrolling(const sf::Vector2u& actualMapSize,
 								sf::View& actualView,
 								sf::RectangleShape&  cameraInhibitionRectangleShape,

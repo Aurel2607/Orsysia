@@ -9,7 +9,7 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
     m_speed(speed),
     m_isEyesOpened(true),
     m_animatedSprite(sf::seconds(0.2), false, true),
-    m_direction(direction::down),
+    m_direction(direction_t::down),
     m_directionHasChanged(false)
 {
 	// Load Texture
@@ -143,16 +143,16 @@ void CPlayer::update(sf::Time time)
 	// Si on a eu une mise à jour de la direction
 	if(m_directionHasChanged == true){
 		switch(m_direction){
-		case direction::down:
+		case direction_t::down:
 			m_pCurrentAnimation = &m_walkingAnimationDown;
 			break;
-		case direction::up:
+		case direction_t::up:
 			m_pCurrentAnimation = &m_walkingAnimationUp;
 			break;
-		case direction::left:
+		case direction_t::left:
 			m_pCurrentAnimation = &m_walkingAnimationLeft;
 			break;
-		case direction::right:
+		case direction_t::right:
 			m_pCurrentAnimation = &m_walkingAnimationRight;
 			break;
 		default:
@@ -164,7 +164,7 @@ void CPlayer::update(sf::Time time)
 	m_animatedSprite.update(time);
 }
 
-void CPlayer::setDirection(direction dir)
+void CPlayer::setDirection(direction_t dir)
 {
 	// Si la direction actuelle est différente de l'ancienne,
 	if(m_direction != dir)
@@ -173,7 +173,7 @@ void CPlayer::setDirection(direction dir)
 	m_direction = dir;
 }
 
-direction CPlayer::getDirection(void)
+direction_t CPlayer::getDirection(void)
 {
 	return m_direction;
 }
