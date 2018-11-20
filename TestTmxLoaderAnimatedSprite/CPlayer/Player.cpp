@@ -24,8 +24,11 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
 	setEyesOpened(m_isEyesOpened);
 
 	// set up AnimatedSprite position
-	m_animatedSprite.setPosition( 	(position.x - (float)playerWidth) / 2.f,
-									(position.y - (float)playerHeight) / 2.f);
+	setPosition((position.x - (float)playerWidth) / 2.f,
+				(position.y - (float)playerHeight) / 2.f);
+
+	m_textUp.setText(" x:" + (std::to_string(getPosition().x)).substr(0,5)
+						+ " y:" + (std::to_string(getPosition().y)).substr(0,5));
 
 	// Player limit Rectangle
 	//------------------------
@@ -35,20 +38,6 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
 	m_playerLimitRectShape.setOutlineThickness(2.f);
 	m_playerLimitRectShape.setPosition(getPosition().x, getPosition().y);
 
-	// Initialisation du Texte Up
-	//------------------------
-	if (!m_textUpFont.loadFromFile("fonts/Ubuntu-M.ttf")){
-		printf("CPlayer::CPlayer - font not loaded\r\n");
-	}
-	m_textUp.setFont(m_textUpFont);
-	m_textUp.setColor(sf::Color::White);
-	m_textUp.setCharacterSize(14);
-	m_textUp.setPosition(getPosition().x - 25.f, getPosition().y - 15.f);
-	m_textUp.setString(	" x:" + (std::to_string(getPosition().x)).substr(0,5)
-						+ " y:" + (std::to_string(getPosition().y)).substr(0,5));
-	m_textUpBGRectShape.setSize(sf::Vector2f(m_textUp.getLocalBounds().width + 5, m_textUp.getGlobalBounds().height + 5));
-	m_textUpBGRectShape.setPosition(m_textUp.getPosition());
-	m_textUpBGRectShape.setFillColor(sf::Color::Black);
 }
 
 CPlayer::~CPlayer()
@@ -144,9 +133,6 @@ void CPlayer::move(sf::Vector2f movement)
 	m_textUp.setString(	" x:" + (std::to_string(getPosition().x)).substr(0,5)
 						+ " y:" + (std::to_string(getPosition().y)).substr(0,5));
     m_textUp.move(movement);
-	m_textUpBGRectShape.setSize(sf::Vector2f(m_textUp.getLocalBounds().width + 5, m_textUp.getGlobalBounds().height + 5));
-	m_textUpBGRectShape.move(movement);
-
 }
 
 void CPlayer::update(sf::Time time)
@@ -216,7 +202,6 @@ bool CPlayer::isEyesOpened(void)
 
 void CPlayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(m_textUpBGRectShape);
 	target.draw(m_textUp);
 	target.draw(m_playerLimitRectShape);
 	target.draw(m_animatedSprite, states);
@@ -230,7 +215,19 @@ const sf::Vector2f& CPlayer::getPosition() const
 
 void CPlayer::setPosition(sf::Vector2f& pos)
 {
-	return m_animatedSprite.setPosition(pos);
+	m_animatedSprite.setPosition(pos);
+
+	// LimitRectShape
+	m_playerLimitRectShape.setPosition(pos);
+
+	// Texte Up
+	m_textUp.setString(	" x:" + (std::to_string(pos.x)).substr(0,5)
+						+ " y:" + (std::to_string(pos.y)).substr(0,5));
+	m_textUp.setPosition(pos.x - 25.f, pos.y - 15.f);
+	m_textUpBGRectShape.setSize(sf::Vector2f(m_textUp.getGlobalBounds().width + 10,
+											 m_textUp.getGlobalBounds().height + 10));
+	m_textUpBGRectShape.setPosition(m_textUp.getPosition());
+
 }
 
 const sf::Vector2f CPlayer::getCenter(void) const
@@ -243,7 +240,7 @@ const sf::Vector2f CPlayer::getCenter(void) const
 
 void CPlayer::setCenter(sf::Vector2f& center)
 {
-	return m_animatedSprite.setPosition(center.x - getWidth() / 2.f, center.y - getHeight() / 2.f);
+	return this->setPosition(center);
 }
 
 const sf::Vector2f CPlayer::getSize() const

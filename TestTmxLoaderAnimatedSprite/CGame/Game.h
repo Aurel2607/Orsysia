@@ -74,6 +74,9 @@ private:
 								sf::View& actualView,
 								sf::RectangleShape&  cameraInhibitionRectangleShape,
 								CPlayer& player);
+
+private:
+	sf::Vector2f mapGetWarpStartPosition(void);
 };
 
 #endif // CGAME_H

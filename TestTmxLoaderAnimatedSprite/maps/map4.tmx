@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="14">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="6" nextobjectid="16">
  <tileset firstgid="1" source="winter.tsx"/>
  <layer id="1" name="Calque de Tile 1" width="20" height="20">
   <data encoding="csv">
 11,12,11,12,11,12,11,12,11,12,11,12,11,12,11,12,11,12,11,12,
 27,28,27,28,27,28,27,28,27,28,27,28,27,28,27,28,27,28,27,28,
-11,12,11,12,11,12,11,12,11,12,11,12,11,12,11,12,11,12,11,12,
-27,28,27,28,27,28,27,28,27,28,27,28,27,28,27,28,27,28,27,28,
-0,33,43,43,43,43,43,43,43,43,43,43,43,43,43,43,0,25,26,0,
-0,33,43,43,217,218,219,43,43,217,218,219,43,43,43,0,0,9,10,0,
+11,12,11,12,48,12,11,12,11,12,11,12,11,12,11,12,11,12,11,12,
+27,28,27,28,48,28,27,28,27,28,27,28,27,28,27,28,27,28,27,28,
+11,12,11,12,11,12,11,12,43,43,43,43,43,43,43,43,0,25,26,0,
+27,28,27,28,27,28,27,28,43,217,218,219,43,43,43,0,0,9,10,0,
 0,0,33,0,233,234,235,33,33,233,234,235,0,0,33,0,7,25,26,0,
 0,0,33,33,249,250,217,218,219,249,250,251,33,33,33,0,7,217,218,219,
 34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,7,233,234,235,
@@ -51,5 +51,9 @@
  </layer>
  <objectgroup id="3" name="solidObject">
   <object id="13" name="Main" x="286.667" y="474.667" width="194.667" height="193.333"/>
+  <object id="14" name="Tombes" x="192.333" y="96.3333" width="47.3333" height="95.3333"/>
+ </objectgroup>
+ <objectgroup id="5" name="warpObject">
+  <object id="15" name="start1" x="49" y="144" width="47" height="47.5"/>
  </objectgroup>
 </map>

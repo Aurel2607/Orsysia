@@ -24,6 +24,11 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileN
 		throw;// TODO (Aurel#1#): Verifier throw comme erreur de retour CTOR
 	}
 
+	// player late Init
+	//------------------
+	sf::Vector2f startPosition = mapGetWarpStartPosition();
+	m_nunPlayer.setCenter(startPosition);
+
 	// m_renderWindow late init
 	//--------------------------
 	m_renderWindow.setFramerateLimit(60);
@@ -122,7 +127,7 @@ void CGame::processEvents(void)
 		}
 		m_noKeyWasPressed = false;
 		m_nunPlayer.setDirection(direction_t::up);
-	}
+	}else
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))	{
 		if((m_nunPlayer.getPosition().y + m_nunPlayer.getSize().y) < static_cast<float>(m_mapLoader.getMapSize().y)){
 			m_playerMovement.y += m_nunPlayer.getSpeed();
@@ -130,13 +135,14 @@ void CGame::processEvents(void)
 		m_noKeyWasPressed = false;
 		m_nunPlayer.setDirection(direction_t::down);
 	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))	{
 		if(m_nunPlayer.getPosition().x > 0){
 			m_playerMovement.x -= m_nunPlayer.getSpeed();
 		}
 		m_noKeyWasPressed = false;
 		m_nunPlayer.setDirection(direction_t::left);
-	}
+	}else
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		if((m_nunPlayer.getPosition().x + m_nunPlayer.getSize().x) < static_cast<float>(m_mapLoader.getMapSize().x)){
 			m_playerMovement.x += m_nunPlayer.getSpeed();
@@ -254,12 +260,40 @@ CGame::interractionType_t CGame::testInteraction2(	tmx::MapLoader & ml,
 													CPlayer& player,
 													sf::Vector2f& movt)
 {
-	bool collision = false;
-
-	sf::Rect<float> futurRect(	player.getRect().left + movt.x,
-								player.getRect().top + movt.y,
+	sf::Rect<float> futurRect(	player.getRect().left,
+								player.getRect().top,
 								player.getRect().width,
 								player.getRect().height);
+
+//	if(player.getDirection() == direction_t::down){
+//		futurRect.top = player.getRect().top + 2;
+////		futurRect.top = player.getRect().top + movt.x;
+//	}
+//	if(player.getDirection() == direction_t::up){
+//		futurRect.top = player.getRect().top - 1;
+////		futurRect.top = player.getRect().top + movt.x;
+//	}
+//
+//	if(player.getDirection() == direction_t::left){
+//		futurRect.left = player.getRect().left - 2;
+////		futurRect.left = player.getRect().left + movt.y;
+//	}
+//	if(player.getDirection() == direction_t::right){
+//		futurRect.left = player.getRect().left + 1;
+////		futurRect.left = player.getRect().left + movt.y;
+//	}
+	if(movt.x > 0){
+		futurRect.top = player.getRect().top + 2;
+	}else if(movt.x < 0){
+		futurRect.top = player.getRect().top - 2;
+	}
+
+	if(movt.y > 0){
+		futurRect.left = player.getRect().left + 2;
+	}else if(movt.y < 0){
+		futurRect.left = player.getRect().left - 2;
+	}
+
 
 	const auto& layersToCheck = ml.getLayers();
 	for(const auto& layerInd : layersToCheck)
@@ -364,3 +398,26 @@ sf::Vector2f CGame::centerScrolling(const sf::Vector2u& actualMapSize,
 	return viewMoving;
 }
 
+
+
+sf::Vector2f CGame::mapGetWarpStartPosition(void)
+{
+	const auto& layersToCheck = m_mapLoader.getLayers();
+	for(const auto& layerInd : layersToCheck)
+	{
+		if(layerInd.type == tmx::ObjectGroup)
+		{
+			// Collisions
+			if(layerInd.name == "warpObject")
+			{
+				for(const auto& obj : layerInd.objects)
+				{
+					if(obj.getName() == "start1"){
+						//handle collision
+						return obj.getCentre();
+					}
+				}
+			}
+		}
+	}
+}

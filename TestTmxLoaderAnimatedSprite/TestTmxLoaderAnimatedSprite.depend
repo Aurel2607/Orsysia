@@ -1667,16 +1667,17 @@
 1541850809 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animation.cpp
 	"Animation.h"
 
-1542628207 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
+1542722617 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
 	"Player.h"
 
-1542628207 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.h
+1542728239 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.h
 	<string>
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 	"../AnimatedSprite/AnimatedSprite.h"
 	"../main.h"
+	"TexteUp.h"
 
 1525808418 e:\perso\devperso\orsysia\sfml-2.5.1-windows-gcc-5.1.0-tdm-32-bit\sfml-2.5.1\include\sfml\system.hpp
 	<SFML/Config.hpp>
@@ -1997,10 +1998,10 @@
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 
-1542629748 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
+1542722131 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
 	"Game.h"
 
-1542642281 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
+1542720965 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
@@ -2093,4 +2094,12 @@
 
 1542613836 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.h
 	<tmx/MapLoader.hpp>
+
+1542724271 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\texteup.cpp
+	"TexteUp.h"
+
+1542728534 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\texteup.h
+	<SFML/System.hpp>
+	<SFML/Window.hpp>
+	<SFML/Graphics.hpp>
 

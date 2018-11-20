@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include "../AnimatedSprite/AnimatedSprite.h"
 #include "../main.h"
+#include "TexteUp.h"
 
 class CPlayer: public sf::Drawable
 {
@@ -63,21 +64,15 @@ public:
 	void toggleEyes(void);
 	bool isEyesOpened(void);
 
-
-//-----------------------------------------------------------------------------
-//							Player Drawing - HUD
-//-----------------------------------------------------------------------------
-private:
-	// Texte Up
-	sf::Text m_textUp;
-	sf::Font m_textUpFont;
-	sf::RectangleShape m_textUpBGRectShape;
-
 //-----------------------------------------------------------------------------
 //							Player Drawing - Player limit Rectangle
 //-----------------------------------------------------------------------------
 private:
 	sf::RectangleShape m_playerLimitRectShape;
+
+// TextUp
+private:
+	CTexteUp m_textUp;
 
 //-----------------------------------------------------------------------------
 //							Player Drawing
