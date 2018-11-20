@@ -87,6 +87,7 @@ private:
 public:
 	const sf::Vector2f& getPosition() const;
 	void setPosition(sf::Vector2f& pos);
+	void setPosition(float x, float y);
 	const sf::Vector2f getCenter(void) const;
 	void setCenter(sf::Vector2f& center);
 

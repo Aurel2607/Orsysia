@@ -10,7 +10,10 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
     m_isEyesOpened(true),
     m_animatedSprite(sf::seconds(0.2), false, true),
     m_direction(direction_t::down),
-    m_directionHasChanged(false)
+    m_directionHasChanged(false),
+    m_textUp(	" x:" + (std::to_string(position.x)).substr(0,5)
+				+ " y:" + (std::to_string(position.y)).substr(0,5),
+				position)
 {
 	// Load Texture
 	if (!m_texture1.loadFromFile(spriteSheet)){
@@ -27,8 +30,7 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
 	setPosition((position.x - (float)playerWidth) / 2.f,
 				(position.y - (float)playerHeight) / 2.f);
 
-	m_textUp.setText(" x:" + (std::to_string(getPosition().x)).substr(0,5)
-						+ " y:" + (std::to_string(getPosition().y)).substr(0,5));
+	m_textUp.setPosition(getPosition());
 
 	// Player limit Rectangle
 	//------------------------
@@ -130,9 +132,7 @@ void CPlayer::move(sf::Vector2f movement)
 	m_playerLimitRectShape.move(movement);
 
 	// Move Texte Up
-	m_textUp.setString(	" x:" + (std::to_string(getPosition().x)).substr(0,5)
-						+ " y:" + (std::to_string(getPosition().y)).substr(0,5));
-    m_textUp.move(movement);
+//    m_textUp.doMove(movement);
 }
 
 void CPlayer::update(sf::Time time)
@@ -221,13 +221,14 @@ void CPlayer::setPosition(sf::Vector2f& pos)
 	m_playerLimitRectShape.setPosition(pos);
 
 	// Texte Up
-	m_textUp.setString(	" x:" + (std::to_string(pos.x)).substr(0,5)
-						+ " y:" + (std::to_string(pos.y)).substr(0,5));
 	m_textUp.setPosition(pos.x - 25.f, pos.y - 15.f);
-	m_textUpBGRectShape.setSize(sf::Vector2f(m_textUp.getGlobalBounds().width + 10,
-											 m_textUp.getGlobalBounds().height + 10));
-	m_textUpBGRectShape.setPosition(m_textUp.getPosition());
 
+}
+
+void CPlayer::setPosition(float x, float y)
+{
+	sf::Vector2f pos(x,y);
+	setPosition(pos);
 }
 
 const sf::Vector2f CPlayer::getCenter(void) const
