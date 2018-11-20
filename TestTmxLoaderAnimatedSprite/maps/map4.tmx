@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="13">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="14">
  <tileset firstgid="1" source="winter.tsx"/>
  <layer id="1" name="Calque de Tile 1" width="20" height="20">
   <data encoding="csv">
@@ -13,10 +13,10 @@
 0,0,33,33,249,250,217,218,219,249,250,251,33,33,33,0,7,217,218,219,
 34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,7,233,234,235,
 34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,7,249,250,251,
-34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,9,10,0,0,
-34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,25,26,0,0,
-0,0,33,33,33,33,33,33,0,33,33,33,33,33,0,0,0,217,218,219,
-62,0,0,0,0,0,33,33,33,33,33,0,33,33,33,0,77,233,234,235,
+34,34,34,34,34,34,205,205,205,205,34,34,34,34,34,34,9,10,0,0,
+34,34,34,34,34,34,221,221,221,221,34,34,34,34,34,34,25,26,0,0,
+0,0,33,33,33,33,205,205,205,221,33,33,33,33,0,0,0,217,218,219,
+62,0,0,0,0,0,221,221,221,221,33,0,33,33,33,0,77,233,234,235,
 62,62,62,62,62,62,62,62,0,33,62,62,62,0,0,0,0,249,250,251,
 78,78,78,78,78,78,78,78,0,0,78,78,78,0,77,0,77,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,77,77,0,0,0,0,0,0,0,
@@ -25,7 +25,7 @@
 229,229,229,229,229,229,229,229,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="up" width="20" height="20" visible="0">
+ <layer id="4" name="up" width="20" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -50,15 +50,6 @@
 </data>
  </layer>
  <objectgroup id="3" name="solidObject">
-  <object id="1" name="snow" x="16" y="826.667" width="352" height="120"/>
-  <object id="2" name="tente" x="817.667" y="625.333" width="142" height="93.667"/>
-  <object id="3" name="log3" x="674.333" y="721.333" width="43" height="44.6667"/>
-  <object id="8" name="treesPolygoneDown" x="7" y="626">
-   <polygon points="0,0 40,-1 41,46 376,46 377,139 -5,141"/>
-  </object>
-  <object id="9" name="treesDown" x="480" y="673" width="143" height="96"/>
-  <object id="10" name="log2" x="771.5" y="720.667" width="43" height="44.6667"/>
-  <object id="11" name="log1" x="772.5" y="626.667" width="43" height="44.6667"/>
-  <object id="12" name="aloneTree" x="768.5" y="476.667" width="93" height="100.667"/>
+  <object id="13" name="Main" x="286.667" y="474.667" width="194.667" height="193.333"/>
  </objectgroup>
 </map>

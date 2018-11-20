@@ -21,7 +21,7 @@
 					<Add library="sfml-window-d" />
 					<Add library="sfml-system-d" />
 					<Add library="tmx-loader-d" />
-					<Add directory="../divers/sfml-tmxloader-master/sfml-tmxloader-master/build/Debug" />
+					<Add directory="../sfml-tmxloader-master/sfml-tmxloader-master/build/Debug" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -39,18 +39,18 @@
 					<Add library="sfml-window" />
 					<Add library="sfml-system" />
 					<Add library="tmx-loader" />
-					<Add directory="../divers/sfml-tmxloader-master/sfml-tmxloader-master/build/Release" />
+					<Add directory="../sfml-tmxloader-master/sfml-tmxloader-master/build/Release" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="../SFML-2.5.1/include" />
-			<Add directory="../divers/sfml-tmxloader-master/sfml-tmxloader-master/include" />
+			<Add directory="../SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/include" />
+			<Add directory="../sfml-tmxloader-master/sfml-tmxloader-master/include" />
 		</Compiler>
 		<Linker>
 			<Add directory="C:/Program Files (x86)/CodeBlocks/MinGW/bin" />
-			<Add directory="../SFML-2.5.1/lib" />
+			<Add directory="../SFML-2.5.1-windows-gcc-5.1.0-tdm-32-bit/SFML-2.5.1/lib" />
 			<Add directory="../divers/tinyxml2-master/tinyxml2-master/build" />
 			<Add directory="../divers/zlib1211/zlib-1.2.11/build" />
 		</Linker>

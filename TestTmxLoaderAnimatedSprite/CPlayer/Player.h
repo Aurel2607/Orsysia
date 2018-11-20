@@ -65,7 +65,7 @@ public:
 
 
 //-----------------------------------------------------------------------------
-//							Player Drawing
+//							Player Drawing - HUD
 //-----------------------------------------------------------------------------
 private:
 	// Texte Up
@@ -73,7 +73,17 @@ private:
 	sf::Font m_textUpFont;
 	sf::RectangleShape m_textUpBGRectShape;
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+//-----------------------------------------------------------------------------
+//							Player Drawing - Player limit Rectangle
+//-----------------------------------------------------------------------------
+private:
+	sf::RectangleShape m_playerLimitRectShape;
+
+//-----------------------------------------------------------------------------
+//							Player Drawing
+//-----------------------------------------------------------------------------
+private:
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 
 //-----------------------------------------------------------------------------
@@ -82,6 +92,8 @@ private:
 public:
 	const sf::Vector2f& getPosition() const;
 	void setPosition(sf::Vector2f& pos);
+	const sf::Vector2f getCenter(void) const;
+	void setCenter(sf::Vector2f& center);
 
 	const sf::Vector2f getSize() const;
 

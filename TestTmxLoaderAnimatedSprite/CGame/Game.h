@@ -29,10 +29,8 @@ private:
 	std::string m_mapPathName;
 	std::string m_mapFileName;
 	tmx::MapLoader m_mapLoader;
-	std::vector<tmx::MapLayer>& m_layers;
 
 	CPlayer m_nunPlayer;
-
 
 	// TODO (Aurel#1#): Ajouter à la Classe CHud
 	// HUD Text
@@ -40,10 +38,6 @@ private:
 	sf::Font m_hudFont;
 	sf::Text m_hudText;
 	sf::RectangleShape m_hudBG;
-
-	// Player limit Rectangle  // TODO (Aurel#1#): A bouger dans la classe CPlayer
-	//------------------------
-	sf::RectangleShape m_playerLimitRectShape;
 
 	// Camera limit Rectangle // TODO (Aurel#1#): A bouger dans la classe CMap
 	//------------------------
@@ -61,18 +55,21 @@ private:
 	void processEvents(void);
 	void update(void);
 	void render(void);
-	bool testInteraction(std::vector<tmx::MapLayer>& layersToCheck);
 
 private:
 	enum interractionType_t{
-		colision = 0,
+		collision = 0,
 		warp,
 		terain
 	};
 
 private:
-	interractionType_t testInteraction2(	std::vector<tmx::MapLayer>& layersToCheck,
-							CPlayer& player);
+	bool testInteraction(tmx::MapLoader & ml);
+
+	interractionType_t testInteraction2(tmx::MapLoader & ml,
+										CPlayer& player,
+										sf::Vector2f& movt);
+
 	sf::Vector2f centerScrolling(const sf::Vector2u& actualMapSize,
 								sf::View& actualView,
 								sf::RectangleShape&  cameraInhibitionRectangleShape,

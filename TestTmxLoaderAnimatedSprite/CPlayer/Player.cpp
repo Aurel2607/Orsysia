@@ -3,7 +3,7 @@
 
 const float CPlayer::speedHero = 150.f;
 
-CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spriteSheet, sf::Vector2f screenDimensions):
+CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spriteSheet, sf::Vector2f position):
     m_playerWidth(playerWidth),
     m_playerHeight(playerHeight),
     m_speed(speed),
@@ -23,11 +23,20 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
 
 	setEyesOpened(m_isEyesOpened);
 
-	// set up AnimatedSprite position in the middle of screen
-	m_animatedSprite.setPosition( 	(screenDimensions.x - (float)playerWidth) / 2.f,
-									(screenDimensions.y - (float)playerHeight) / 2.f);
+	// set up AnimatedSprite position
+	m_animatedSprite.setPosition( 	(position.x - (float)playerWidth) / 2.f,
+									(position.y - (float)playerHeight) / 2.f);
+
+	// Player limit Rectangle
+	//------------------------
+	m_playerLimitRectShape.setSize(getSize());
+	m_playerLimitRectShape.setFillColor(sf::Color::Transparent);
+	m_playerLimitRectShape.setOutlineColor(sf::Color::Red);
+	m_playerLimitRectShape.setOutlineThickness(2.f);
+	m_playerLimitRectShape.setPosition(getPosition().x, getPosition().y);
 
 	// Initialisation du Texte Up
+	//------------------------
 	if (!m_textUpFont.loadFromFile("fonts/Ubuntu-M.ttf")){
 		printf("CPlayer::CPlayer - font not loaded\r\n");
 	}
@@ -38,7 +47,6 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
 	m_textUp.setString(	" x:" + (std::to_string(getPosition().x)).substr(0,5)
 						+ " y:" + (std::to_string(getPosition().y)).substr(0,5));
 	m_textUpBGRectShape.setSize(sf::Vector2f(m_textUp.getLocalBounds().width + 5, m_textUp.getGlobalBounds().height + 5));
-//	m_textUpBGRectShape.setSize(sf::Vector2f(200.f, 200.f));
 	m_textUpBGRectShape.setPosition(m_textUp.getPosition());
 	m_textUpBGRectShape.setFillColor(sf::Color::Black);
 }
@@ -129,6 +137,9 @@ void CPlayer::move(sf::Vector2f movement)
 	// Move Sprite
 	m_animatedSprite.move(movement);
 
+	// Move LimitRectShape
+	m_playerLimitRectShape.move(movement);
+
 	// Move Texte Up
 	m_textUp.setString(	" x:" + (std::to_string(getPosition().x)).substr(0,5)
 						+ " y:" + (std::to_string(getPosition().y)).substr(0,5));
@@ -207,6 +218,7 @@ void CPlayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_textUpBGRectShape);
 	target.draw(m_textUp);
+	target.draw(m_playerLimitRectShape);
 	target.draw(m_animatedSprite, states);
 }
 
@@ -219,6 +231,19 @@ const sf::Vector2f& CPlayer::getPosition() const
 void CPlayer::setPosition(sf::Vector2f& pos)
 {
 	return m_animatedSprite.setPosition(pos);
+}
+
+const sf::Vector2f CPlayer::getCenter(void) const
+{
+	sf::Vector2f center;
+	center.x = m_animatedSprite.getPosition().x + getWidth() / 2.f;
+	center.y = m_animatedSprite.getPosition().y + getHeight() / 2.f;
+	return center;
+}
+
+void CPlayer::setCenter(sf::Vector2f& center)
+{
+	return m_animatedSprite.setPosition(center.x - getWidth() / 2.f, center.y - getHeight() / 2.f);
 }
 
 const sf::Vector2f CPlayer::getSize() const

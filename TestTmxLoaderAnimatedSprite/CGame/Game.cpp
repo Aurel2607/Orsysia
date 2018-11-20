@@ -9,10 +9,7 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileN
 	m_mapPathName(mapPathName),
 	m_mapFileName(mapFileName),
 	m_mapLoader(m_mapPathName),
-	m_layers(m_mapLoader.getLayers()),
-	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions),
-//TODO: Retrouver à qui ca appartient??
-//	(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10))),
+	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
 	m_playerMovement(0.f, 0.f)
 {
 
@@ -45,14 +42,6 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileN
 //TODO: Retrouver à qui ca appartient??
 //	(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)))
 
-	// Player limit Rectangle  // TODO (Aurel#1#): A bouger dans la classe CPlayer
-	//------------------------
-	m_playerLimitRectShape.setSize(m_nunPlayer.getSize());
-	m_playerLimitRectShape.setFillColor(sf::Color::Transparent);
-	m_playerLimitRectShape.setOutlineColor(sf::Color::Red);
-	m_playerLimitRectShape.setOutlineThickness(2.f);
-	m_playerLimitRectShape.setPosition(m_nunPlayer.getPosition().x, m_nunPlayer.getPosition().y);
-
 	// Camera limit Rectangle // TODO (Aurel#1#): A bouger dans la classe CMap
 	//------------------------
 	m_cameraInhibitionRectShape.setSize(sf::Vector2f(CAMERA_INHIBITION_WIDTH, CAMERA_INHIBITION_HEIGHT));
@@ -75,7 +64,7 @@ CGame::~CGame()
 void CGame::run(void)
 {
 	//TEMP
-	testInteraction(m_layers);
+	testInteraction(m_mapLoader);
 
 	while(m_renderWindow.isOpen() == true)
 	{
@@ -174,27 +163,13 @@ void CGame::update()
 		m_nunPlayer.stop();
 	}else{
 		sf::View view = m_renderWindow.getView();
-		// Pour tous les objets de la couche colision
-			// Tester si les boites englobantes se touchent
-
-
-
-
-
-		if(m_mapLoader.quadTreeAvailable() == true){
-			printf("m_mapLoader.quadTreeAvailable() == true\r\n");
-			// Build quad tree by querying visible region
-			// TODO (Aurel#1#): Reduce the quadtree area update, kind of "around the player area"
-			m_mapLoader.updateQuadTree(view.getViewport());
-
-			//NOTE quad tree MUST be updated before attempting to query it
-			sf::FloatRect playerFuturMvtRect(m_playerMovement + m_nunPlayer.getPosition(), m_nunPlayer.getSize());
-			std::vector<tmx::MapObject*> objects = m_mapLoader.queryQuadTree(playerFuturMvtRect);
-
-		}else{
-			printf("no m_mapLoader.quadTreeAvailable() available -- bouhhhh!!\r\n");
+//		if(testInteraction2(m_mapLoader, m_playerMovement + m_nunPlayer.getCenter()) == interractionType_t::colision){
+		if(testInteraction2(m_mapLoader,
+							m_nunPlayer,
+							m_playerMovement) == interractionType_t::collision){
+			printf(" Collision\r\n");
+			m_playerMovement = sf::Vector2f(0.f,0.f);
 		}
-
 		m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
 		//On gère le scrolling
 		cameraMovement = centerScrolling(	m_mapLoader.getMapSize(),
@@ -208,7 +183,6 @@ void CGame::update()
 
 	// update Player
 	m_nunPlayer.update(frameTime);
-	m_playerLimitRectShape.move(m_playerMovement  * frameTime.asSeconds());
 
 	// update HUD (fps, player position)
 	float fpsCount = (1.f / frameTime.asSeconds());
@@ -230,7 +204,6 @@ void CGame::render()
 	m_renderWindow.draw(m_nunPlayer);
 	m_renderWindow.draw(m_hudBG, m_hudText.getTransform());
 	m_renderWindow.draw(m_hudText);
-	m_renderWindow.draw(m_playerLimitRectShape);
 	m_renderWindow.draw(m_cameraInhibitionRectShape);
 	m_mapLoader.drawLayer(m_renderWindow, tmx::MapLayer::Debug);//draw with debug information shown
 	m_renderWindow.display();
@@ -242,9 +215,11 @@ void CGame::render()
 
 
 // Test testInteraction
-bool CGame::testInteraction(std::vector<tmx::MapLayer>& layersToCheck)
+bool CGame::testInteraction(tmx::MapLoader & ml)
 {
-	for(auto& layerInd : layersToCheck){
+	const auto& layersToCheck = ml.getLayers();
+	for(auto& layerInd : layersToCheck)
+	{
 		printf(" Layer: %s  (", layerInd.name.c_str());
 		switch (layerInd.type)
 		{
@@ -275,21 +250,31 @@ bool CGame::testInteraction(std::vector<tmx::MapLayer>& layersToCheck)
 }
 
 // Test testInteraction
-CGame::interractionType_t CGame::testInteraction2(	std::vector<tmx::MapLayer>& layersToCheck,
-													CPlayer& player)
+CGame::interractionType_t CGame::testInteraction2(	tmx::MapLoader & ml,
+													CPlayer& player,
+													sf::Vector2f& movt)
 {
-	for(auto& layerInd : layersToCheck){
-		if(layerInd.type == tmx::ObjectGroup){
-			for(auto& obj : layerInd.objects){
-				// Collisions
-				if(layerInd.name == "solidObject"){
-					for(auto& point : player.collisionPoints){
-						if(obj.contains(player.position + point)){
-							//handle collision
-						   break; //don't test more points than you need
-						}
+	bool collision = false;
+
+	sf::Rect<float> futurRect(	player.getRect().left + movt.x,
+								player.getRect().top + movt.y,
+								player.getRect().width,
+								player.getRect().height);
+
+	const auto& layersToCheck = ml.getLayers();
+	for(const auto& layerInd : layersToCheck)
+	{
+		if(layerInd.type == tmx::ObjectGroup)
+		{
+			// Collisions
+			if(layerInd.name == "solidObject")
+			{
+				for(const auto& obj : layerInd.objects)
+				{
+					if(futurRect.intersects(obj.getAABB())){
+						//handle collision
+						return interractionType_t::collision;
 					}
-					return interractionType_t::colision;
 				}
 
 				// Trigger
