@@ -8,7 +8,6 @@
 #include <tmx/Log.hpp>
 #include "Player.h"
 #include "Map.h"
-#include "View.h"
 
 class CGame
 {
@@ -28,7 +27,6 @@ private:
 	bool m_showDebug;
 
 	CMap 	m_map;
-	CView 	m_view;
 	CPlayer m_nunPlayer;
 
 	// TODO (Aurel#1#): Ajouter à la Classe CHud
@@ -52,12 +50,10 @@ private:
 	void render(void);
 
 private:
-	sf::Vector2f centerScrolling(const sf::Vector2u& actualMapSize,
-								CView& view,
-								CPlayer& player);
+	sf::Vector2f centerScrolling(	const sf::Vector2u& actualMapSize,
+									sf::View& actualView,
+									CPlayer& player);
 
-private:
-	sf::Vector2f mapGetWarpStartPosition(void);
 };
 
 #endif // CGAME_H

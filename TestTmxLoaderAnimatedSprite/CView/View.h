@@ -2,12 +2,14 @@
 #define CVIEW_H
 
 #include "../main.h"
-class CView
+
+class CView : public sf::Drawable
 {
 public:
 	CView(sf::Vector2f screenDimensions);
 	virtual ~CView();
 
+	sf::Vector2f getCenter() const;
 	sf::Vector2f getSize() const;
 	sf::Vector2f getCameraInhibitionRectSize() const;
 
@@ -20,6 +22,8 @@ private:
 
 	// Camera limit Rectangle
 	sf::RectangleShape 	m_cameraInhibitionRectShape;
+
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 };
 

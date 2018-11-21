@@ -6,8 +6,7 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 	m_screenDimensions(SCREEN_WIDTH, SCREEN_HEIGHT),
 	m_renderWindow(sf::VideoMode(m_screenDimensions.x, m_screenDimensions.y), m_gameName),
 	m_showDebug(false),
-	m_map(mapPathName, startingMapFileName),
-	m_view(m_screenDimensions),
+	m_map(m_screenDimensions, mapPathName, startingMapFileName),
 	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
 	m_playerMovement(0.f, 0.f)
 {
@@ -16,7 +15,7 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 
 	// player late Init
 	//------------------
-	sf::Vector2f startPosition = mapGetWarpStartPosition();
+	sf::Vector2f startPosition = m_map.getWarpStartPosition();
 	m_nunPlayer.setCenter(startPosition);
 
 	// m_renderWindow late init
@@ -162,7 +161,7 @@ void CGame::update()
 		m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
 		//On gère le scrolling
 		cameraMovement = centerScrolling(	m_map.getMapSize(),
-											m_view,
+											view,
 											m_nunPlayer);
 		m_renderWindow.setView(view);
 	}
@@ -192,7 +191,7 @@ void CGame::render()
 	m_renderWindow.draw(m_nunPlayer);
 	m_renderWindow.draw(m_hudBG, m_hudText.getTransform());
 	m_renderWindow.draw(m_hudText);
-	m_view.drawCameraInhibitRect(m_renderWindow);
+	m_map.drawCameraInhibitRect(m_renderWindow);
 	m_map.drawLayer(m_renderWindow, tmx::MapLayer::Debug);//draw with debug information shown
 	m_renderWindow.display();
 
@@ -207,18 +206,18 @@ void CGame::render()
 // TODO (Aurel#1#): A deplacer dans la classe CMap ou CCamera???
 
 sf::Vector2f CGame::centerScrolling(const sf::Vector2u& actualMapSize,
-									CView& view,
+									sf::View& actualView,
 									CPlayer& player)
 {
 
 	int cxperso = static_cast<int>(player.getPosition().x) + player.getWidth() / 2;
 	int cyperso = static_cast<int>(player.getPosition().y) + player.getHeight() / 2;
 
-	int xLimMin = static_cast<int>(actualView.getCenter().x - view.getCameraInhibitionRectSize().x / 2.f);
-	int xLimMax = static_cast<int>(actualView.getCenter().x + view.getCameraInhibitionRectSize().x / 2.f);
+	int xLimMin = static_cast<int>(actualView.getCenter().x - m_map.getCameraInhibitionRectSize().x / 2.f);
+	int xLimMax = static_cast<int>(actualView.getCenter().x + m_map.getCameraInhibitionRectSize().x / 2.f);
 
-	int yLimMin = static_cast<int>(actualView.getCenter().y - view.getCameraInhibitionRectSize().y / 2.f);
-	int yLimMax = static_cast<int>(actualView.getCenter().y + view.getCameraInhibitionRectSize().y / 2.f);
+	int yLimMin = static_cast<int>(actualView.getCenter().y - m_map.getCameraInhibitionRectSize().y / 2.f);
+	int yLimMax = static_cast<int>(actualView.getCenter().y + m_map.getCameraInhibitionRectSize().y / 2.f);
 
 	sf::Vector2f viewMoving(0.f, 0.f);
 
@@ -269,31 +268,10 @@ sf::Vector2f CGame::centerScrolling(const sf::Vector2u& actualMapSize,
 	}
 
 	actualView.move(viewMoving);
-	camInhibitRectShp.move(viewMoving);
+	m_map.moveCameraInhibitionRect(viewMoving);
 
 	return viewMoving;
 }
 
 
 
-sf::Vector2f CGame::mapGetWarpStartPosition(void)
-{
-	const auto& layersToCheck = m_mapLoader.getLayers();
-	for(const auto& layerInd : layersToCheck)
-	{
-		if(layerInd.type == tmx::ObjectGroup)
-		{
-			// Collisions
-			if(layerInd.name == "warpObject")
-			{
-				for(const auto& obj : layerInd.objects)
-				{
-					if(obj.getName() == "start1"){
-						//handle collision
-						return obj.getCentre();
-					}
-				}
-			}
-		}
-	}
-}

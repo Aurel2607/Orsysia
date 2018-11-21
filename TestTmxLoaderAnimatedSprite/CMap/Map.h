@@ -16,11 +16,15 @@ public:
 		terain
 	};
 
-	CMap(std::string pathName, std::string startingMapFileName);
+	CMap(sf::Vector2f screenDimensions,std::string pathName, std::string startingMapFileName);
 	virtual ~CMap();
 
 	void displayLayerInfos(void);
 	sf::Vector2u getMapSize() const;
+	sf::Vector2f getWarpStartPosition(void);
+
+	sf::Vector2f getCameraInhibitionRectSize() const;
+	void moveCameraInhibitionRect(sf::Vector2f movement);
 
 
 	interractionType_t testInteraction(	CPlayer& player,
@@ -29,9 +33,13 @@ public:
 protected:
 
 private:
-	std::string 	m_pathName;
-	std::string 	m_actualMapFileName;
-	tmx::MapLoader 	m_mapLoader;
+	sf::Vector2f 		m_screenDimensions;
+	std::string 		m_pathName;
+	std::string 		m_actualMapFileName;
+	tmx::MapLoader 		m_mapLoader;
+
+	sf::RectangleShape 	m_cameraInhibitionRectShape;	// Camera limit Rectangle
+
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
