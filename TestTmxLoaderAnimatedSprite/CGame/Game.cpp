@@ -134,8 +134,7 @@ void CGame::processEvents(void)
 		}
 		m_noKeyWasPressed = false;
 		m_nunPlayer.setDirection(direction_t::down);
-	}
-
+	}else
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))	{
 		if(m_nunPlayer.getPosition().x > 0){
 			m_playerMovement.x -= m_nunPlayer.getSpeed();
@@ -169,7 +168,6 @@ void CGame::update()
 		m_nunPlayer.stop();
 	}else{
 		sf::View view = m_renderWindow.getView();
-//		if(testInteraction2(m_mapLoader, m_playerMovement + m_nunPlayer.getCenter()) == interractionType_t::colision){
 		if(testInteraction2(m_mapLoader,
 							m_nunPlayer,
 							m_playerMovement) == interractionType_t::collision){
@@ -265,34 +263,34 @@ CGame::interractionType_t CGame::testInteraction2(	tmx::MapLoader & ml,
 								player.getRect().width,
 								player.getRect().height);
 
-//	if(player.getDirection() == direction_t::down){
-//		futurRect.top = player.getRect().top + 2;
-////		futurRect.top = player.getRect().top + movt.x;
-//	}
-//	if(player.getDirection() == direction_t::up){
-//		futurRect.top = player.getRect().top - 1;
-////		futurRect.top = player.getRect().top + movt.x;
-//	}
-//
-//	if(player.getDirection() == direction_t::left){
-//		futurRect.left = player.getRect().left - 2;
-////		futurRect.left = player.getRect().left + movt.y;
-//	}
-//	if(player.getDirection() == direction_t::right){
-//		futurRect.left = player.getRect().left + 1;
-////		futurRect.left = player.getRect().left + movt.y;
-//	}
-	if(movt.x > 0){
+	if(player.getDirection() == direction_t::down){
 		futurRect.top = player.getRect().top + 2;
-	}else if(movt.x < 0){
-		futurRect.top = player.getRect().top - 2;
+//		futurRect.top = player.getRect().top + movt.x;
+	}
+	if(player.getDirection() == direction_t::up){
+		futurRect.top = player.getRect().top - 1;
+//		futurRect.top = player.getRect().top + movt.x;
 	}
 
-	if(movt.y > 0){
-		futurRect.left = player.getRect().left + 2;
-	}else if(movt.y < 0){
+	if(player.getDirection() == direction_t::left){
 		futurRect.left = player.getRect().left - 2;
+//		futurRect.left = player.getRect().left + movt.y;
 	}
+	if(player.getDirection() == direction_t::right){
+		futurRect.left = player.getRect().left + 1;
+//		futurRect.left = player.getRect().left + movt.y;
+	}
+//	if(movt.x > 0){
+//		futurRect.top = player.getRect().top + 2;
+//	}else if(movt.x < 0){
+//		futurRect.top = player.getRect().top - 2;
+//	}
+//
+//	if(movt.y > 0){
+//		futurRect.left = player.getRect().left + 2;
+//	}else if(movt.y < 0){
+//		futurRect.left = player.getRect().left - 2;
+//	}
 
 
 	const auto& layersToCheck = ml.getLayers();
@@ -311,8 +309,17 @@ CGame::interractionType_t CGame::testInteraction2(	tmx::MapLoader & ml,
 					}
 				}
 
-				// Trigger
-				if(layerInd.name == "trigger"){
+				// warpObject
+				if(layerInd.name == "warpObject"){
+					// TODO:
+					for(const auto& obj : layerInd.objects)
+					{
+						if(futurRect.intersects(obj.getAABB())){
+							//handle warp
+							return interractionType_t::collision;
+						}
+					}
+
 					//send trigger command to queue
 					return interractionType_t::warp;
 				}

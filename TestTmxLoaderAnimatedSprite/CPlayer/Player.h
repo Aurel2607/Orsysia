@@ -11,6 +11,11 @@
 
 class CPlayer: public sf::Drawable
 {
+private:
+	static const float xOffsetTextUp;
+	static const float yOffsetTextUp;
+
+
 public:
     static const float speedHero;
 

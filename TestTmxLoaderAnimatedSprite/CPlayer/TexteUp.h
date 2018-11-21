@@ -8,31 +8,24 @@
 class CTexteUp: public sf::Drawable
 {
 public:
-	CTexteUp(std::string textToAppend, sf::Vector2f position);
+	CTexteUp(	sf::Vector2f posRef,
+				sf::Vector2f textUpOffset,
+				std::string textToAppend);
 	virtual ~CTexteUp();
 
-	const sf::Vector2f& 	getPosition() const;
-	void 					setPosition(const sf::Vector2f& pos);
-	void 					setPosition(const float x, const float y);
-
-	const sf::Vector2f 	getCenter(void) const;
-	void 				setCenter(const float x, const float y);
-	void 				setCenter(sf::Vector2f center);
-
-
-	const sf::Vector2f getSize() const;
-
-	void toto(sf::Vector2f movement);
-	void doMove(sf::Vector2f movement);
-	void update(sf::Time time);
+	void 	setPosition(const sf::Vector2f& pos);
+	void 	move(sf::Vector2f movement);
+//	void 	update(sf::Time time);
 
 protected:
 
 private:
-	std::string m_textToAppend;
-	sf::Text m_text;
-	sf::Font m_textFont;
-	sf::RectangleShape m_textBG;
+	sf::Vector2f 		m_posRef;		// Position de reference
+	sf::Vector2f 		m_textUpOffset; // Offset du texte à afficher par rapport à la position de reference
+	std::string 		m_textToAppend;	// Texte à ajouter au texte affiché
+	sf::Text 			m_text;
+	sf::Font 			m_textFont;
+	sf::RectangleShape 	m_textBG;
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -40,10 +33,8 @@ private:
 private:
 
 	void setPositionInternal(const sf::Vector2f pos);
-	void setTextInternal(const sf::Vector2f pos);
 
-	static const float xOffset;
-	static const float yOffset;
+	std::string getTextToDisplay(void);
 
 };
 

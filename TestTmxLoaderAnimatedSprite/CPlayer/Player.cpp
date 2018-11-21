@@ -2,6 +2,8 @@
 #include "Player.h"
 
 const float CPlayer::speedHero = 150.f;
+const float CPlayer::xOffsetTextUp = -30.f;
+const float CPlayer::yOffsetTextUp = -20.f;
 
 CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spriteSheet, sf::Vector2f position):
     m_playerWidth(playerWidth),
@@ -11,9 +13,9 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
     m_animatedSprite(sf::seconds(0.2), false, true),
     m_direction(direction_t::down),
     m_directionHasChanged(false),
-    m_textUp(	" x:" + (std::to_string(position.x)).substr(0,5)
-				+ " y:" + (std::to_string(position.y)).substr(0,5),
-				position)
+    m_textUp(	position,
+				sf::Vector2f(xOffsetTextUp, yOffsetTextUp),
+				"Nun")
 {
 	// Load Texture
 	if (!m_texture1.loadFromFile(spriteSheet)){
@@ -30,7 +32,6 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
 	setPosition((position.x - (float)playerWidth) / 2.f,
 				(position.y - (float)playerHeight) / 2.f);
 
-	m_textUp.setPosition(getPosition());
 
 	// Player limit Rectangle
 	//------------------------
@@ -132,7 +133,7 @@ void CPlayer::move(sf::Vector2f movement)
 	m_playerLimitRectShape.move(movement);
 
 	// Move Texte Up
-//    m_textUp.doMove(movement);
+    m_textUp.move(movement);
 }
 
 void CPlayer::update(sf::Time time)
@@ -221,7 +222,7 @@ void CPlayer::setPosition(sf::Vector2f& pos)
 	m_playerLimitRectShape.setPosition(pos);
 
 	// Texte Up
-	m_textUp.setPosition(pos.x - 25.f, pos.y - 15.f);
+	m_textUp.setPosition(pos);
 
 }
 
