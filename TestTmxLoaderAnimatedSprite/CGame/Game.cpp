@@ -1,28 +1,18 @@
 #include "Game.h"
 
 // Ctor
-CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileName):
+CGame::CGame(std::string gameName, std::string mapPathName, std::string startingMapFileName):
 	m_gameName(gameName),
 	m_screenDimensions(SCREEN_WIDTH, SCREEN_HEIGHT),
 	m_renderWindow(sf::VideoMode(m_screenDimensions.x, m_screenDimensions.y), m_gameName),
 	m_showDebug(false),
-	m_mapPathName(mapPathName),
-	m_mapFileName(mapFileName),
-	m_mapLoader(m_mapPathName),
+	m_map(mapPathName, startingMapFileName),
+	m_view(m_screenDimensions),
 	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
 	m_playerMovement(0.f, 0.f)
 {
 
-
-    // Create map loader and load map
-	//-------------------------------
 	tmx::setLogLevel(tmx::Logger::Info | tmx::Logger::Error);//set the debugging output mode
-    if (!m_mapLoader.load(m_mapFileName)){
-		printf("CGame::CGame - map %s/%s not found\r\n",
-				m_mapPathName.c_str(),
-				m_mapFileName.c_str());
-		throw;// TODO (Aurel#1#): Verifier throw comme erreur de retour CTOR
-	}
 
 	// player late Init
 	//------------------
@@ -47,14 +37,6 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string mapFileN
 //TODO: Retrouver à qui ca appartient??
 //	(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)))
 
-	// Camera limit Rectangle // TODO (Aurel#1#): A bouger dans la classe CMap
-	//------------------------
-	m_cameraInhibitionRectShape.setSize(sf::Vector2f(CAMERA_INHIBITION_WIDTH, CAMERA_INHIBITION_HEIGHT));
-	m_cameraInhibitionRectShape.setFillColor(sf::Color::Transparent);
-	m_cameraInhibitionRectShape.setOutlineColor(sf::Color::Red);
-	m_cameraInhibitionRectShape.setOutlineThickness(2.f);
-	m_cameraInhibitionRectShape.setPosition((m_screenDimensions - m_cameraInhibitionRectShape.getSize()) / 2.f);
-
 }
 
 // Dtor
@@ -69,7 +51,7 @@ CGame::~CGame()
 void CGame::run(void)
 {
 	//TEMP
-	testInteraction(m_mapLoader);
+	m_map.displayLayerInfos();
 
 	while(m_renderWindow.isOpen() == true)
 	{
@@ -129,7 +111,7 @@ void CGame::processEvents(void)
 		m_nunPlayer.setDirection(direction_t::up);
 	}else
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))	{
-		if((m_nunPlayer.getPosition().y + m_nunPlayer.getSize().y) < static_cast<float>(m_mapLoader.getMapSize().y)){
+		if((m_nunPlayer.getPosition().y + m_nunPlayer.getSize().y) < static_cast<float>(m_map.getMapSize().y)){
 			m_playerMovement.y += m_nunPlayer.getSpeed();
 		}
 		m_noKeyWasPressed = false;
@@ -143,7 +125,7 @@ void CGame::processEvents(void)
 		m_nunPlayer.setDirection(direction_t::left);
 	}else
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		if((m_nunPlayer.getPosition().x + m_nunPlayer.getSize().x) < static_cast<float>(m_mapLoader.getMapSize().x)){
+		if((m_nunPlayer.getPosition().x + m_nunPlayer.getSize().x) < static_cast<float>(m_map.getMapSize().x)){
 			m_playerMovement.x += m_nunPlayer.getSpeed();
 		}
 		m_noKeyWasPressed = false;
@@ -168,20 +150,19 @@ void CGame::update()
 		m_nunPlayer.stop();
 	}else{
 		sf::View view = m_renderWindow.getView();
-		interractionType_t inter = testInteraction2(m_mapLoader, m_nunPlayer, m_playerMovement);
-		if(inter == interractionType_t::collision){
+		CMap::interractionType_t inter = m_map.testInteraction(m_nunPlayer, m_playerMovement);
+		if(inter == CMap::interractionType_t::collision){
 			printf(" Collision\r\n");
 			m_playerMovement = sf::Vector2f(0.f,0.f);
-		}else if(inter == interractionType_t::warp){
+		}else if(inter == CMap::interractionType_t::warp){
 			printf(" Warping\r\n");
 		}else{
 //			printf(" None\r\n");
 		}
 		m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
 		//On gère le scrolling
-		cameraMovement = centerScrolling(	m_mapLoader.getMapSize(),
-											view,
-											m_cameraInhibitionRectShape,
+		cameraMovement = centerScrolling(	m_map.getMapSize(),
+											m_view,
 											m_nunPlayer);
 		m_renderWindow.setView(view);
 	}
@@ -207,12 +188,12 @@ void CGame::update()
 void CGame::render()
 {
 	m_renderWindow.clear();
-	m_renderWindow.draw(m_mapLoader);
+	m_renderWindow.draw(m_map);
 	m_renderWindow.draw(m_nunPlayer);
 	m_renderWindow.draw(m_hudBG, m_hudText.getTransform());
 	m_renderWindow.draw(m_hudText);
-	m_renderWindow.draw(m_cameraInhibitionRectShape);
-	m_mapLoader.drawLayer(m_renderWindow, tmx::MapLayer::Debug);//draw with debug information shown
+	m_view.drawCameraInhibitRect(m_renderWindow);
+	m_map.drawLayer(m_renderWindow, tmx::MapLayer::Debug);//draw with debug information shown
 	m_renderWindow.display();
 
 }
@@ -221,142 +202,23 @@ void CGame::render()
 
 
 
-// Test testInteraction
-bool CGame::testInteraction(tmx::MapLoader & ml)
-{
-	const auto& layersToCheck = ml.getLayers();
-	for(auto& layerInd : layersToCheck)
-	{
-		printf(" Layer: %s  (", layerInd.name.c_str());
-		switch (layerInd.type)
-		{
-		case tmx::Layer:
-			printf("Layer)\r\n");
-			break;
-
-		case tmx::ObjectGroup:
-			printf("ObjectGroup)\r\n");
-			for(auto& obj : layerInd.objects){
-				printf("Object : %s (%0.2f,%0.2f)\r\n",
-							obj.getName().c_str(),
-							obj.getCentre().x,
-							obj.getCentre().y);
-			}
-			break;
-
-		case tmx::ImageLayer:
-			printf("ImageLayer)\r\n");
-			break;
-
-		default:
-			printf("Default)\r\n");
-			break;
-		}
-	}
-	return true;
-}
-
-// Test testInteraction
-CGame::interractionType_t CGame::testInteraction2(	tmx::MapLoader & ml,
-													CPlayer& player,
-													sf::Vector2f& movt)
-{
-	sf::Rect<float> futurRect(	player.getRect().left,
-								player.getRect().top,
-								player.getRect().width,
-								player.getRect().height);
-
-	if(player.getDirection() == direction_t::down){
-		futurRect.top = player.getRect().top + 2;
-//		futurRect.top = player.getRect().top + movt.x;
-	}
-	if(player.getDirection() == direction_t::up){
-		futurRect.top = player.getRect().top - 1;
-//		futurRect.top = player.getRect().top + movt.x;
-	}
-
-	if(player.getDirection() == direction_t::left){
-		futurRect.left = player.getRect().left - 2;
-//		futurRect.left = player.getRect().left + movt.y;
-	}
-	if(player.getDirection() == direction_t::right){
-		futurRect.left = player.getRect().left + 1;
-//		futurRect.left = player.getRect().left + movt.y;
-	}
-//	if(movt.x > 0){
-//		futurRect.top = player.getRect().top + 2;
-//	}else if(movt.x < 0){
-//		futurRect.top = player.getRect().top - 2;
-//	}
-//
-//	if(movt.y > 0){
-//		futurRect.left = player.getRect().left + 2;
-//	}else if(movt.y < 0){
-//		futurRect.left = player.getRect().left - 2;
-//	}
-
-
-	auto& layersToCheck = ml.getLayers();
-	for(auto& layerInd : layersToCheck)
-	{
-		if(layerInd.type == tmx::ObjectGroup)
-		{
-			// Collisions
-			if(layerInd.name == "solidObject")
-			{
-				for(auto& obj : layerInd.objects)
-				{
-					if(futurRect.intersects(obj.getAABB())){
-						//handle collision
-						return interractionType_t::collision;
-					}
-				}
-
-			}
-
-			// warpObject
-			if(layerInd.name == "warpObject"){
-				// TODO:
-				for(auto& obj : layerInd.objects)
-				{
-					if(futurRect.intersects(obj.getAABB())){
-						printf("warpObject: %s (mapToLoad '%s', warpPoint '%s')\r\n",
-								obj.getName().c_str(),
-//								(obj.getPropertyString(static_cast<const std::string>"mapToLoad")).c_str(),
-								obj.getPropertyString("mapToLoad").c_str(),
-								obj.getPropertyString("warpPoint").c_str());
-						//handle warp
-						return interractionType_t::warp;
-					}
-				}
-			}
-
-			// Terrain Modification
-			if(layerInd.name == "terrainModif"){
-				return interractionType_t::terain;
-			}
-		}
-	}
-	return interractionType_t::none;
-}
 
 
 // TODO (Aurel#1#): A deplacer dans la classe CMap ou CCamera???
 
 sf::Vector2f CGame::centerScrolling(const sf::Vector2u& actualMapSize,
-									sf::View& actualView,
-									sf::RectangleShape&  camInhibitRectShp,
+									CView& view,
 									CPlayer& player)
 {
 
 	int cxperso = static_cast<int>(player.getPosition().x) + player.getWidth() / 2;
 	int cyperso = static_cast<int>(player.getPosition().y) + player.getHeight() / 2;
 
-	int xLimMin = static_cast<int>(actualView.getCenter().x - camInhibitRectShp.getSize().x / 2.f);
-	int xLimMax = static_cast<int>(actualView.getCenter().x + camInhibitRectShp.getSize().x / 2.f);
+	int xLimMin = static_cast<int>(actualView.getCenter().x - view.getCameraInhibitionRectSize().x / 2.f);
+	int xLimMax = static_cast<int>(actualView.getCenter().x + view.getCameraInhibitionRectSize().x / 2.f);
 
-	int yLimMin = static_cast<int>(actualView.getCenter().y - camInhibitRectShp.getSize().y / 2.f);
-	int yLimMax = static_cast<int>(actualView.getCenter().y + camInhibitRectShp.getSize().y / 2.f);
+	int yLimMin = static_cast<int>(actualView.getCenter().y - view.getCameraInhibitionRectSize().y / 2.f);
+	int yLimMax = static_cast<int>(actualView.getCenter().y + view.getCameraInhibitionRectSize().y / 2.f);
 
 	sf::Vector2f viewMoving(0.f, 0.f);
 

@@ -7,11 +7,13 @@
 #include <tmx/MapLoader.hpp>
 #include <tmx/Log.hpp>
 #include "Player.h"
+#include "Map.h"
+#include "View.h"
 
 class CGame
 {
 public:
-		CGame(std::string gameName, std::string mapPathName, std::string mapFileName);
+		CGame(std::string gameName, std::string mapPathName, std::string startingMapFileName);
 		virtual ~CGame();
 
 		void run(void);
@@ -25,11 +27,8 @@ private:
 	sf::RenderWindow m_renderWindow;
 	bool m_showDebug;
 
-	// TODO (Aurel#1#): Ajouter à la Classe CMap
-	std::string m_mapPathName;
-	std::string m_mapFileName;
-	tmx::MapLoader m_mapLoader;
-
+	CMap 	m_map;
+	CView 	m_view;
 	CPlayer m_nunPlayer;
 
 	// TODO (Aurel#1#): Ajouter à la Classe CHud
@@ -38,10 +37,6 @@ private:
 	sf::Font m_hudFont;
 	sf::Text m_hudText;
 	sf::RectangleShape m_hudBG;
-
-	// Camera limit Rectangle // TODO (Aurel#1#): A bouger dans la classe CMap
-	//------------------------
-	sf::RectangleShape m_cameraInhibitionRectShape;
 
 
 	// Input
@@ -57,23 +52,8 @@ private:
 	void render(void);
 
 private:
-	enum interractionType_t{
-		none = 0,
-		collision,
-		warp,
-		terain
-	};
-
-private:
-	bool testInteraction(tmx::MapLoader & ml);
-
-	interractionType_t testInteraction2(tmx::MapLoader & ml,
-										CPlayer& player,
-										sf::Vector2f& movt);
-
 	sf::Vector2f centerScrolling(const sf::Vector2u& actualMapSize,
-								sf::View& actualView,
-								sf::RectangleShape&  cameraInhibitionRectangleShape,
+								CView& view,
 								CPlayer& player);
 
 private:

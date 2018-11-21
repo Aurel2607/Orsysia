@@ -1670,7 +1670,7 @@
 1542803982 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
 	"Player.h"
 
-1542802193 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.h
+1542809933 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.h
 	<string>
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
@@ -1998,16 +1998,18 @@
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 
-1542800147 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
+1542808414 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
 	"Game.h"
 
-1542804806 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
+1542812376 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 	<tmx/MapLoader.hpp>
 	<tmx/Log.hpp>
 	"Player.h"
+	"Map.h"
+	"View.h"
 
 1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\maploader.hpp
 	<tmx/QuadTreeNode.hpp>
@@ -2089,11 +2091,13 @@
 	<cassert>
 	"main.h"
 
-1542613836 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.cpp
+1542818690 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.cpp
 	"Map.h"
 
-1542613836 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.h
+1542811440 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.h
 	<tmx/MapLoader.hpp>
+	"Player.h"
+	"../main.h"
 
 1542803746 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\texteup.cpp
 	"TexteUp.h"
@@ -2107,4 +2111,10 @@
 	"WarpData.h"
 
 1542790226 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\warpdata.h
+
+1542817672 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cview\view.cpp
+	"View.h"
+
+1542817695 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cview\view.h
+	"../main.h"
 

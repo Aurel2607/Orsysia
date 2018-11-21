@@ -9,7 +9,7 @@
 #include "../main.h"
 #include "TexteUp.h"
 
-class CPlayer: public sf::Drawable
+class CPlayer : public sf::Drawable
 {
 private:
 	static const float xOffsetTextUp;

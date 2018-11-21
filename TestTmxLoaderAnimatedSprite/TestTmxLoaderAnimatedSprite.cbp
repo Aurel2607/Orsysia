@@ -27,6 +27,7 @@
 					<Add directory="CPlayer" />
 					<Add directory="CGame" />
 					<Add directory="CMap" />
+					<Add directory="CView" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics-d" />
@@ -58,6 +59,7 @@
 					<Add directory="CPlayer" />
 					<Add directory="CGame" />
 					<Add directory="CMap" />
+					<Add directory="CView" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -82,6 +84,7 @@
 					<Add directory="CPlayer" />
 					<Add directory="CGame" />
 					<Add directory="CMap" />
+					<Add directory="CView" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -109,6 +112,8 @@
 		<Unit filename="CPlayer/Player.h" />
 		<Unit filename="CPlayer/TexteUp.cpp" />
 		<Unit filename="CPlayer/TexteUp.h" />
+		<Unit filename="CView/View.cpp" />
+		<Unit filename="CView/View.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
 		<Unit filename="sfml-tmxloader/include/tmx/DebugShape.hpp">
