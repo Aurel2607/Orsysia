@@ -58,7 +58,8 @@ private:
 
 private:
 	enum interractionType_t{
-		collision = 0,
+		none = 0,
+		collision,
 		warp,
 		terain
 	};

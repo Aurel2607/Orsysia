@@ -168,11 +168,14 @@ void CGame::update()
 		m_nunPlayer.stop();
 	}else{
 		sf::View view = m_renderWindow.getView();
-		if(testInteraction2(m_mapLoader,
-							m_nunPlayer,
-							m_playerMovement) == interractionType_t::collision){
+		interractionType_t inter = testInteraction2(m_mapLoader, m_nunPlayer, m_playerMovement);
+		if(inter == interractionType_t::collision){
 			printf(" Collision\r\n");
 			m_playerMovement = sf::Vector2f(0.f,0.f);
+		}else if(inter == interractionType_t::warp){
+			printf(" Warping\r\n");
+		}else{
+//			printf(" None\r\n");
 		}
 		m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
 		//On gère le scrolling
@@ -293,15 +296,15 @@ CGame::interractionType_t CGame::testInteraction2(	tmx::MapLoader & ml,
 //	}
 
 
-	const auto& layersToCheck = ml.getLayers();
-	for(const auto& layerInd : layersToCheck)
+	auto& layersToCheck = ml.getLayers();
+	for(auto& layerInd : layersToCheck)
 	{
 		if(layerInd.type == tmx::ObjectGroup)
 		{
 			// Collisions
 			if(layerInd.name == "solidObject")
 			{
-				for(const auto& obj : layerInd.objects)
+				for(auto& obj : layerInd.objects)
 				{
 					if(futurRect.intersects(obj.getAABB())){
 						//handle collision
@@ -309,28 +312,32 @@ CGame::interractionType_t CGame::testInteraction2(	tmx::MapLoader & ml,
 					}
 				}
 
-				// warpObject
-				if(layerInd.name == "warpObject"){
-					// TODO:
-					for(const auto& obj : layerInd.objects)
-					{
-						if(futurRect.intersects(obj.getAABB())){
-							//handle warp
-							return interractionType_t::collision;
-						}
+			}
+
+			// warpObject
+			if(layerInd.name == "warpObject"){
+				// TODO:
+				for(auto& obj : layerInd.objects)
+				{
+					if(futurRect.intersects(obj.getAABB())){
+						printf("warpObject: %s (mapToLoad '%s', warpPoint '%s')\r\n",
+								obj.getName().c_str(),
+//								(obj.getPropertyString(static_cast<const std::string>"mapToLoad")).c_str(),
+								obj.getPropertyString("mapToLoad").c_str(),
+								obj.getPropertyString("warpPoint").c_str());
+						//handle warp
+						return interractionType_t::warp;
 					}
-
-					//send trigger command to queue
-					return interractionType_t::warp;
 				}
+			}
 
-				// Terrain Modification
-				if(layerInd.name == "terrainModif"){
-					return interractionType_t::terain;
-				}
+			// Terrain Modification
+			if(layerInd.name == "terrainModif"){
+				return interractionType_t::terain;
 			}
 		}
 	}
+	return interractionType_t::none;
 }
 
 

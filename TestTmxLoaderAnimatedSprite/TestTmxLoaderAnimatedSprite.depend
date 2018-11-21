@@ -1667,7 +1667,7 @@
 1541850809 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animation.cpp
 	"Animation.h"
 
-1542803789 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
+1542803982 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
 	"Player.h"
 
 1542802193 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.h
@@ -2001,7 +2001,7 @@
 1542800147 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
 	"Game.h"
 
-1542720965 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
+1542804806 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
