@@ -4,6 +4,7 @@
 #include <tmx/MapLoader.hpp>
 #include "Player.h"
 #include "../main.h"
+#include "WarpData.h"
 
 
 class CMap : public sf::Drawable
@@ -40,6 +41,7 @@ private:
 
 	sf::RectangleShape 	m_cameraInhibitionRectShape;	// Camera limit Rectangle
 
+	CWarpData			m_warpData;
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

@@ -1998,7 +1998,7 @@
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 
-1542840791 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
+1542841089 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
 	"Game.h"
 
 1542839521 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
@@ -2093,10 +2093,11 @@
 1542841042 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.cpp
 	"Map.h"
 
-1542841029 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.h
+1542842339 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.h
 	<tmx/MapLoader.hpp>
 	"Player.h"
 	"../main.h"
+	"WarpData.h"
 
 1542835131 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\texteup.cpp
 	"TexteUp.h"
@@ -2106,10 +2107,11 @@
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 
-1542835131 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\warpdata.cpp
+1542842224 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\warpdata.cpp
 	"WarpData.h"
 
-1542835131 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\warpdata.h
+1542842525 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\warpdata.h
+	"../main.h"
 
 1542817672 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cview\view.cpp
 	"View.h"

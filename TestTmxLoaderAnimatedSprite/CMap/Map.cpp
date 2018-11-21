@@ -5,7 +5,8 @@ CMap::CMap(sf::Vector2f screenDimensions, std::string pathName, std::string star
 	m_pathName(pathName),
 	m_actualMapFileName(startingMapFileName),
 	m_mapLoader(pathName),
-	m_cameraInhibitionRectShape(sf::Vector2f(CAMERA_INHIBITION_WIDTH, CAMERA_INHIBITION_HEIGHT))
+	m_cameraInhibitionRectShape(sf::Vector2f(CAMERA_INHIBITION_WIDTH, CAMERA_INHIBITION_HEIGHT)),
+	m_warpData("", sf::Vector2f(0.f,0.f))
 {
     // Load Map
     if (!m_mapLoader.load(m_actualMapFileName)){
@@ -173,6 +174,9 @@ CMap::interractionType_t CMap::testInteraction(	CPlayer& player,
 //								(obj.getPropertyString(static_cast<const std::string>"mapToLoad")).c_str(),
 								obj.getPropertyString("mapToLoad").c_str(),
 								obj.getPropertyString("warpPoint").c_str());
+
+								m_warpData.setMapToLoad(obj.getPropertyString("mapToLoad"));
+								//TODO get center of warpPoint
 						//handle warp
 						return interractionType_t::warp;
 					}

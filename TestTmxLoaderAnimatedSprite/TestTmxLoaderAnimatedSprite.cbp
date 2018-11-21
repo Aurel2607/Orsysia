@@ -112,7 +112,6 @@
 		<Unit filename="CPlayer/Player.h" />
 		<Unit filename="CPlayer/TexteUp.cpp" />
 		<Unit filename="CPlayer/TexteUp.h" />
-		<Unit filename="CView/View.cpp" />
 		<Unit filename="CView/View.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
