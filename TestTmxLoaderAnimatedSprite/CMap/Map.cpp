@@ -1,12 +1,17 @@
 #include "Map.h"
 
+const std::string CMap::collisionLayerName = "solidObject";
+const std::string CMap::warpLayerName = "warpObject";
+const std::string CMap::terrainModifLayerName = "terrainModif";
+
+
 CMap::CMap(sf::Vector2f screenDimensions, std::string pathName, std::string startingMapFileName):
 	m_screenDimensions(screenDimensions),
 	m_pathName(pathName),
 	m_actualMapFileName(startingMapFileName),
 	m_mapLoader(pathName),
 	m_cameraInhibitionRectShape(sf::Vector2f(CAMERA_INHIBITION_WIDTH, CAMERA_INHIBITION_HEIGHT)),
-	m_warpData("", sf::Vector2f(0.f,0.f))
+	m_warpData()
 {
     // Load Map
     if (!m_mapLoader.load(m_actualMapFileName)){
@@ -34,6 +39,24 @@ CMap::~CMap()
 	//dtor
 }
 
+CMap::errorCode_t CMap::loadMap(std::string mapFileName)
+{
+    // Load Map
+    if (!m_mapLoader.load(mapFileName)){
+		printf("CMap::loadMap - map %s/%s not found\r\n",
+				m_pathName.c_str(),
+				mapFileName.c_str());
+		return errorCode_t::mapNotFound;
+	}else{
+		printf("CMap::CMap - map %s/%s loaded\r\n",
+				m_pathName.c_str(),
+				mapFileName.c_str());
+
+		displayLayerInfos();
+
+		return errorCode_t::ok;
+	}
+}
 
 // display Layer Info
 void CMap::displayLayerInfos(void)
@@ -84,7 +107,8 @@ void CMap::moveCameraInhibitionRect(sf::Vector2f movement)
 	m_cameraInhibitionRectShape.move(movement);
 }
 
-sf::Vector2f CMap::getWarpStartPosition(void)
+
+sf::Vector2f CMap::getWarpPointPosition(std::string warpPointName) const
 {
 	auto& layersToCheck = m_mapLoader.getLayers();
 	for(auto& layerInd : layersToCheck)
@@ -96,8 +120,11 @@ sf::Vector2f CMap::getWarpStartPosition(void)
 			{
 				for(const auto& obj : layerInd.objects)
 				{
-					if(obj.getName() == "start1"){
+					if(obj.getName() == warpPointName){
 						//handle collision
+						printf("CMap::getWarpPointPosition %0.2f  %0.2f\r\n",
+								obj.getCentre().x,
+								obj.getCentre().y);
 						return obj.getCentre();
 					}
 				}
@@ -151,7 +178,7 @@ CMap::interractionType_t CMap::testInteraction(	CPlayer& player,
 		if(layerInd.type == tmx::ObjectGroup)
 		{
 			// Collisions
-			if(layerInd.name == "solidObject")
+			if(layerInd.name == collisionLayerName)
 			{
 				for(auto& obj : layerInd.objects)
 				{
@@ -164,27 +191,27 @@ CMap::interractionType_t CMap::testInteraction(	CPlayer& player,
 			}
 
 			// warpObject
-			if(layerInd.name == "warpObject"){
-				// TODO:
+			if(layerInd.name == warpLayerName){
 				for(auto& obj : layerInd.objects)
 				{
 					if(futurRect.intersects(obj.getAABB())){
-						printf("warpObject: %s (mapToLoad '%s', warpPoint '%s')\r\n",
-								obj.getName().c_str(),
-//								(obj.getPropertyString(static_cast<const std::string>"mapToLoad")).c_str(),
-								obj.getPropertyString("mapToLoad").c_str(),
-								obj.getPropertyString("warpPoint").c_str());
+						// Define WarpPoint
+						m_warpData.setMapToLoad(obj.getPropertyString("mapToLoad"));
+						m_warpData.setWarpPointName(obj.getPropertyString("warpPoint"));
 
-								m_warpData.setMapToLoad(obj.getPropertyString("mapToLoad"));
-								//TODO get center of warpPoint
-						//handle warp
+						printf("warpObject: %s (mapToLoad '%s', warpPoint '%s'\r\n",
+								obj.getName().c_str(),
+								m_warpData.getMapToLoad().c_str(),
+								m_warpData.getWarpPointName().c_str());
+
+
 						return interractionType_t::warp;
 					}
 				}
 			}
 
 			// Terrain Modification
-			if(layerInd.name == "terrainModif"){
+			if(layerInd.name == terrainModifLayerName){
 				return interractionType_t::terain;
 			}
 		}

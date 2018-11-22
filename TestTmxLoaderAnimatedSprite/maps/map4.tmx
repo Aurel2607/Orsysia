@@ -54,11 +54,12 @@
   <object id="14" name="Tombes" x="192.333" y="96.3333" width="47.3333" height="95.3333"/>
  </objectgroup>
  <objectgroup id="5" name="warpObject">
-  <properties>
-   <property name="mapToLoad" value="map5.tmx"/>
-   <property name="warpPointName" value="warp3"/>
-  </properties>
   <object id="15" name="start1" x="49" y="144" width="47" height="47.5"/>
-  <object id="16" name="warp1" x="1" y="254.5" width="46.5" height="65.5"/>
+  <object id="16" name="warp1" x="1" y="254.5" width="46.5" height="65.5">
+   <properties>
+    <property name="mapToLoad" value="map5.tmx"/>
+    <property name="warpPoint" value="warp3"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

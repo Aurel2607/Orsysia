@@ -214,7 +214,7 @@ const sf::Vector2f& CPlayer::getPosition() const
 	return m_animatedSprite.getPosition();
 }
 
-void CPlayer::setPosition(sf::Vector2f& pos)
+void CPlayer::setPosition(const sf::Vector2f& pos)
 {
 	m_animatedSprite.setPosition(pos);
 
@@ -240,7 +240,7 @@ const sf::Vector2f CPlayer::getCenter(void) const
 	return center;
 }
 
-void CPlayer::setCenter(sf::Vector2f& center)
+void CPlayer::setCenter(const sf::Vector2f& center)
 {
 	return this->setPosition(center);
 }

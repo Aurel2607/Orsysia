@@ -10,6 +10,17 @@
 class CMap : public sf::Drawable
 {
 public:
+	enum errorCode_t{
+		ok = 0,
+		mapNotFound
+	};
+
+private:
+	static const std::string collisionLayerName;
+	static const std::string warpLayerName;
+	static const std::string terrainModifLayerName;
+
+public:
 	enum interractionType_t{
 		none = 0,
 		collision,
@@ -20,12 +31,14 @@ public:
 	CMap(sf::Vector2f screenDimensions,std::string pathName, std::string startingMapFileName);
 	virtual ~CMap();
 
-	void displayLayerInfos(void);
-	sf::Vector2u getMapSize() const;
-	sf::Vector2f getWarpStartPosition(void);
+	errorCode_t loadMap(std::string mapFileName);
 
-	sf::Vector2f getCameraInhibitionRectSize() const;
-	void moveCameraInhibitionRect(sf::Vector2f movement);
+	void 				displayLayerInfos(void);
+	sf::Vector2u 		getMapSize() const;
+	sf::Vector2f 		getWarpPointPosition(std::string warpPointName) const;
+	const CWarpData 	getWarpData(void) const {return m_warpData;}
+	sf::Vector2f 		getCameraInhibitionRectSize() const;
+	void 				moveCameraInhibitionRect(sf::Vector2f movement);
 
 
 	interractionType_t testInteraction(	CPlayer& player,
@@ -42,6 +55,7 @@ private:
 	sf::RectangleShape 	m_cameraInhibitionRectShape;	// Camera limit Rectangle
 
 	CWarpData			m_warpData;
+
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

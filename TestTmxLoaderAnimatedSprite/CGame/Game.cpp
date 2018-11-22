@@ -8,14 +8,15 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 	m_showDebug(false),
 	m_map(m_screenDimensions, mapPathName, startingMapFileName),
 	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
-	m_playerMovement(0.f, 0.f)
+	m_playerMovement(0.f, 0.f),
+	m_comingFromWrap(true)
 {
 
 	tmx::setLogLevel(tmx::Logger::Info | tmx::Logger::Error);//set the debugging output mode
 
 	// player late Init
 	//------------------
-	sf::Vector2f startPosition = m_map.getWarpStartPosition();
+	sf::Vector2f startPosition = m_map.getWarpPointPosition("start1");
 	m_nunPlayer.setCenter(startPosition);
 
 	// m_renderWindow late init
@@ -150,13 +151,28 @@ void CGame::update()
 	}else{
 		sf::View view = m_renderWindow.getView();
 		CMap::interractionType_t inter = m_map.testInteraction(m_nunPlayer, m_playerMovement);
-		if(inter == CMap::interractionType_t::collision){
+		if(inter == CMap::interractionType_t::collision)
+			{
 			printf(" Collision\r\n");
 			m_playerMovement = sf::Vector2f(0.f,0.f);
-		}else if(inter == CMap::interractionType_t::warp){
-			printf(" Warping\r\n");
-		}else{
+		}
+		else if(inter == CMap::interractionType_t::warp)
+		{
+			if(m_comingFromWrap == false){
+				CWarpData warpData = m_map.getWarpData();
+				if(warpData.getMapToLoad() != ""){
+					m_map.loadMap(warpData.getMapToLoad());
+					m_nunPlayer.setCenter(m_map.getWarpPointPosition(warpData.getWarpPointName()));
+					m_playerMovement = sf::Vector2f(0.f,0.f);
+					printf(" Warping\r\n");
+					m_comingFromWrap = true;
+				}
+			}
+		}
+		else
+		{
 //			printf(" None\r\n");
+			m_comingFromWrap = false;
 		}
 		m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
 		//On gère le scrolling

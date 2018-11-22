@@ -6,19 +6,20 @@
 class CWarpData
 {
 public:
-	CWarpData(std::string mapToLoad, sf::Vector2f warpPoint);
+	CWarpData();
 	virtual ~CWarpData();
 
 	std::string getMapToLoad(void) const {return m_mapToLoad;}
-	void setMapToLoad(std::string mapToLoad) {m_mapToLoad = mapToLoad;}
-	sf::Vector2f getWarpPoint(void) const {return m_warpPoint;}
-	void setWarpPoint(sf::Vector2f warpPoint) {m_warpPoint = warpPoint;}
+	void setMapToLoad(const std::string& mapToLoad) {m_mapToLoad = mapToLoad;}
+
+	std::string getWarpPointName(void) const {return m_warpPointName;}
+	void setWarpPointName(const std::string& warpPointName) {m_warpPointName = warpPointName;}
 
 protected:
 
 private:
 	std::string m_mapToLoad;
-	sf::Vector2f m_warpPoint;
+	std::string m_warpPointName;
 };
 
 #endif // CWARPDATA_H
