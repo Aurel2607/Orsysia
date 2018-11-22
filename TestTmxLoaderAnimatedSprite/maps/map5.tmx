@@ -68,13 +68,23 @@
    <property name="mapToLoad" value="map5.tmx"/>
    <property name="warpPointName" value="warp3"/>
   </properties>
-  <object id="17" name="warp2" x="482.083" y="24.9167" width="46.5" height="46.8333"/>
+  <object id="17" name="warp2" x="482.083" y="24.9167" width="46.5" height="46.8333">
+   <properties>
+    <property name="mapToLoad" value="map5.tmx"/>
+    <property name="warpPoint" value="warp4"/>
+   </properties>
+  </object>
   <object id="18" name="warp3" x="840.083" y="210.25" width="92.5" height="65.5">
    <properties>
     <property name="mapToLoad" value="map4.tmx"/>
     <property name="warpPoint" value="warp1"/>
    </properties>
   </object>
-  <object id="19" name="warp4" x="433.417" y="746.25" width="46.5" height="42.8333"/>
+  <object id="19" name="warp4" x="433.417" y="746.25" width="46.5" height="42.8333">
+   <properties>
+    <property name="mapToLoad" value="map5.tmx"/>
+    <property name="warpPoint" value="warp2"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

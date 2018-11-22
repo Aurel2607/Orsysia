@@ -45,6 +45,7 @@ private:
 	sf::Vector2f m_playerMovement;
 
 	bool m_comingFromWrap;
+	bool m_disableInput;
 
 private:
 	void processEvents(void);

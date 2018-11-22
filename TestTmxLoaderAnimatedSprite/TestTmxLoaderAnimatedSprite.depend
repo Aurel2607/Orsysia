@@ -1998,10 +1998,10 @@
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 
-1542903155 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
+1542905774 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
 	"Game.h"
 
-1542892437 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
+1542904937 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
@@ -2090,10 +2090,10 @@
 	<cassert>
 	"main.h"
 
-1542891256 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.cpp
+1542905906 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.cpp
 	"Map.h"
 
-1542881865 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.h
+1542905810 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmap\map.h
 	<tmx/MapLoader.hpp>
 	"Player.h"
 	"../main.h"

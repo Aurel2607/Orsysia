@@ -135,41 +135,27 @@ sf::Vector2f CMap::getWarpPointPosition(std::string warpPointName) const
 
 // Test testInteraction
 CMap::interractionType_t CMap::testInteraction(	CPlayer& player,
-												sf::Vector2f& movt)
+												const sf::Vector2f& movt)
 {
 	sf::Rect<float> futurRect(	player.getRect().left,
 								player.getRect().top,
 								player.getRect().width,
 								player.getRect().height);
+//	printf(" CMap::testInteraction: Mvt %0.2f, %0.2f\r\n", movt.x, movt.y);
 
 	if(player.getDirection() == direction_t::down){
-		futurRect.top = player.getRect().top + 5;
-//		futurRect.top = player.getRect().top + movt.x;
+		futurRect.top = player.getRect().top + movt.x + 3;
 	}
 	if(player.getDirection() == direction_t::up){
-		futurRect.top = player.getRect().top - 5;
-//		futurRect.top = player.getRect().top + movt.x;
+		futurRect.top = player.getRect().top + movt.x - 3;
 	}
 
 	if(player.getDirection() == direction_t::left){
-		futurRect.left = player.getRect().left - 5;
-//		futurRect.left = player.getRect().left + movt.y;
+		futurRect.left = player.getRect().left + movt.y - 3;
 	}
 	if(player.getDirection() == direction_t::right){
-		futurRect.left = player.getRect().left + 5;
-//		futurRect.left = player.getRect().left + movt.y;
+		futurRect.left = player.getRect().left + movt.y + 3;
 	}
-//	if(movt.x > 0){
-//		futurRect.top = player.getRect().top + 2;
-//	}else if(movt.x < 0){
-//		futurRect.top = player.getRect().top - 2;
-//	}
-//
-//	if(movt.y > 0){
-//		futurRect.left = player.getRect().left + 2;
-//	}else if(movt.y < 0){
-//		futurRect.left = player.getRect().left - 2;
-//	}
 
 
 	auto& layersToCheck = m_mapLoader.getLayers();
@@ -194,7 +180,7 @@ CMap::interractionType_t CMap::testInteraction(	CPlayer& player,
 			if(layerInd.name == warpLayerName){
 				for(auto& obj : layerInd.objects)
 				{
-					if(futurRect.intersects(obj.getAABB())){
+					if(futurRect.contains(obj.getCentre())){
 						// Define WarpPoint
 						m_warpData.setMapToLoad(obj.getPropertyString("mapToLoad"));
 						m_warpData.setWarpPointName(obj.getPropertyString("warpPoint"));

@@ -9,7 +9,8 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 	m_map(m_screenDimensions, mapPathName, startingMapFileName),
 	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
 	m_playerMovement(0.f, 0.f),
-	m_comingFromWrap(true)
+	m_comingFromWrap(true),
+	m_disableInput(false)
 {
 
 	tmx::setLogLevel(tmx::Logger::Info | tmx::Logger::Error);//set the debugging output mode
@@ -97,41 +98,47 @@ void CGame::processEvents(void)
 				break;
 			default: break;
 			}
+
+			// The key is released, the Disable input when comming from a warp position is not needed anymore
+			m_disableInput = false;
 		}
 	}
 
 	m_playerMovement = sf::Vector2f(0.f,0.f);
 
-	// if a key was pressed set the correct animation and move correctly
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		if(m_nunPlayer.getPosition().y > 0){
-			m_playerMovement.y -= m_nunPlayer.getSpeed();
+	// Disable input when comming from a warp position
+	if(m_disableInput == false)
+	{
+		// if a key was pressed set the correct animation and move correctly
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+			if(m_nunPlayer.getPosition().y > 0){
+				m_playerMovement.y -= m_nunPlayer.getSpeed();
+			}
+			m_noKeyWasPressed = false;
+			m_nunPlayer.setDirection(direction_t::up);
+		}else
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))	{
+			if((m_nunPlayer.getPosition().y + m_nunPlayer.getSize().y) < static_cast<float>(m_map.getMapSize().y)){
+				m_playerMovement.y += m_nunPlayer.getSpeed();
+			}
+			m_noKeyWasPressed = false;
+			m_nunPlayer.setDirection(direction_t::down);
+		}else
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))	{
+			if(m_nunPlayer.getPosition().x > 0){
+				m_playerMovement.x -= m_nunPlayer.getSpeed();
+			}
+			m_noKeyWasPressed = false;
+			m_nunPlayer.setDirection(direction_t::left);
+		}else
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			if((m_nunPlayer.getPosition().x + m_nunPlayer.getSize().x) < static_cast<float>(m_map.getMapSize().x)){
+				m_playerMovement.x += m_nunPlayer.getSpeed();
+			}
+			m_noKeyWasPressed = false;
+			m_nunPlayer.setDirection(direction_t::right);
 		}
-		m_noKeyWasPressed = false;
-		m_nunPlayer.setDirection(direction_t::up);
-	}else
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))	{
-		if((m_nunPlayer.getPosition().y + m_nunPlayer.getSize().y) < static_cast<float>(m_map.getMapSize().y)){
-			m_playerMovement.y += m_nunPlayer.getSpeed();
-		}
-		m_noKeyWasPressed = false;
-		m_nunPlayer.setDirection(direction_t::down);
-	}else
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))	{
-		if(m_nunPlayer.getPosition().x > 0){
-			m_playerMovement.x -= m_nunPlayer.getSpeed();
-		}
-		m_noKeyWasPressed = false;
-		m_nunPlayer.setDirection(direction_t::left);
-	}else
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		if((m_nunPlayer.getPosition().x + m_nunPlayer.getSize().x) < static_cast<float>(m_map.getMapSize().x)){
-			m_playerMovement.x += m_nunPlayer.getSpeed();
-		}
-		m_noKeyWasPressed = false;
-		m_nunPlayer.setDirection(direction_t::right);
 	}
-
 
 }
 
@@ -150,7 +157,7 @@ void CGame::update()
 	if (m_noKeyWasPressed) {
 		m_nunPlayer.stop();
 	}else{
-		CMap::interractionType_t inter = m_map.testInteraction(m_nunPlayer, m_playerMovement);
+		CMap::interractionType_t inter = m_map.testInteraction(m_nunPlayer, m_playerMovement * frameTime.asSeconds());
 		if(inter == CMap::interractionType_t::collision)
 			{
 			printf(" Collision\r\n");
@@ -166,6 +173,7 @@ void CGame::update()
 					m_playerMovement = sf::Vector2f(0.f,0.f);
 					printf(" Warping\r\n");
 					m_comingFromWrap = true;
+					m_disableInput = true;
 				}
 			}
 		}

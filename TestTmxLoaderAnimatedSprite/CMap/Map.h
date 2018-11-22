@@ -42,7 +42,7 @@ public:
 
 
 	interractionType_t testInteraction(	CPlayer& player,
-										sf::Vector2f& movt);
+										const sf::Vector2f& movt);
 
 protected:
 
