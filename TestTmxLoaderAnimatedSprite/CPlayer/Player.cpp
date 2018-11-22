@@ -242,7 +242,10 @@ const sf::Vector2f CPlayer::getCenter(void) const
 
 void CPlayer::setCenter(const sf::Vector2f& center)
 {
-	return this->setPosition(center);
+	sf::Vector2f posToSet;
+	posToSet.x = center.x - getWidth() / 2.f;
+	posToSet.y = center.y - getHeight() / 2.f;
+	return this->setPosition(posToSet);
 }
 
 const sf::Vector2f CPlayer::getSize() const

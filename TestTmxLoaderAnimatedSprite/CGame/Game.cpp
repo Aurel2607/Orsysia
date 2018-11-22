@@ -145,11 +145,11 @@ void CGame::update()
 
 	// update View
 	sf::Vector2f cameraMovement(0.f, 0.f);
+	sf::View view = m_renderWindow.getView();
 	// if no key was pressed stop the animation
 	if (m_noKeyWasPressed) {
 		m_nunPlayer.stop();
 	}else{
-		sf::View view = m_renderWindow.getView();
 		CMap::interractionType_t inter = m_map.testInteraction(m_nunPlayer, m_playerMovement);
 		if(inter == CMap::interractionType_t::collision)
 			{
@@ -176,11 +176,11 @@ void CGame::update()
 		}
 		m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
 		//On gère le scrolling
-		cameraMovement = centerScrolling(	m_map.getMapSize(),
-											view,
-											m_nunPlayer);
-		m_renderWindow.setView(view);
 	}
+	cameraMovement = centerScrolling(	m_map.getMapSize(),
+										view,
+										m_nunPlayer);
+	m_renderWindow.setView(view);
 
 	m_noKeyWasPressed = true;
 
@@ -220,51 +220,46 @@ void CGame::render()
 
 
 // TODO (Aurel#1#): A deplacer dans la classe CMap ou CCamera???
-
 sf::Vector2f CGame::centerScrolling(const sf::Vector2u& actualMapSize,
 									sf::View& actualView,
 									CPlayer& player)
 {
+	float xLimMin = actualView.getCenter().x - m_map.getCameraInhibitionRectSize().x / 2.f;
+	float xLimMax = actualView.getCenter().x + m_map.getCameraInhibitionRectSize().x / 2.f;
 
-	int cxperso = static_cast<int>(player.getPosition().x) + player.getWidth() / 2;
-	int cyperso = static_cast<int>(player.getPosition().y) + player.getHeight() / 2;
-
-	int xLimMin = static_cast<int>(actualView.getCenter().x - m_map.getCameraInhibitionRectSize().x / 2.f);
-	int xLimMax = static_cast<int>(actualView.getCenter().x + m_map.getCameraInhibitionRectSize().x / 2.f);
-
-	int yLimMin = static_cast<int>(actualView.getCenter().y - m_map.getCameraInhibitionRectSize().y / 2.f);
-	int yLimMax = static_cast<int>(actualView.getCenter().y + m_map.getCameraInhibitionRectSize().y / 2.f);
+	float yLimMin = actualView.getCenter().y - m_map.getCameraInhibitionRectSize().y / 2.f;
+	float yLimMax = actualView.getCenter().y + m_map.getCameraInhibitionRectSize().y / 2.f;
 
 	sf::Vector2f viewMoving(0.f, 0.f);
 
 	// 	Moving camera within inhibit Rectangle
 	//------------------------------------------
-	if (cxperso < xLimMin){
+	if (player.getCenter().x < (actualView.getCenter().x - actualView.getSize().x /4.f)){
+		viewMoving.x = -15.f;
+	}
+	else if (player.getCenter().x < xLimMin){
 		viewMoving.x = - 3.f;
 	}
-	else if (cxperso < (actualView.getCenter().x - actualView.getSize().x /2.f)){
-		viewMoving.x = -30.f;
-	}
 
-	if (cxperso > xLimMax){
+	if (player.getCenter().x > (actualView.getCenter().x + actualView.getSize().x /4.f)){
+		viewMoving.x = 15.f;
+	}
+	else if (player.getCenter().x > xLimMax){
 		viewMoving.x = 3.f;
 	}
-	else if (cxperso > (actualView.getCenter().x + actualView.getSize().x /2.f)){
-		viewMoving.x = 30.f;
-	}
 
-	if (cyperso < yLimMin){
+	if (player.getCenter().y < (actualView.getCenter().y - actualView.getSize().y /4.f)){
+		viewMoving.y = - 15.f;
+	}
+	else if (player.getCenter().y < yLimMin){
 		viewMoving.y = - 3.f;
 	}
-	else if (cyperso < (actualView.getCenter().y - actualView.getSize().y /2.f)){
-		viewMoving.y = - 30.f;
-	}
 
-	if (cyperso > yLimMax){
-		viewMoving.y = 3.f;
+	if (player.getCenter().y > (actualView.getCenter().y + actualView.getSize().y /4.f)){
+		viewMoving.y = 15.f;
 	}
-	else if (cyperso > (actualView.getCenter().y + actualView.getSize().y /2.f)){
-		viewMoving.y = 30.f;
+	else if (player.getCenter().y > yLimMax){
+		viewMoving.y = 3.f;
 	}
 
 	// Blocking Camera with the end of the map
