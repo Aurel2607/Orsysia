@@ -47,6 +47,10 @@ private:
 	bool m_comingFromWrap;
 	bool m_disableInput;
 
+	sf::View m_minimapView;
+//	sf::view m_fixedView;
+//	sf::View m_standardView
+
 private:
 	void processEvents(void);
 	void update(void);

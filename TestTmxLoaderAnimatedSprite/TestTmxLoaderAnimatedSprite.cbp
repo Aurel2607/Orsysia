@@ -28,6 +28,7 @@
 					<Add directory="CGame" />
 					<Add directory="CMap" />
 					<Add directory="CView" />
+					<Add directory="CInput" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics-d" />
@@ -60,6 +61,7 @@
 					<Add directory="CGame" />
 					<Add directory="CMap" />
 					<Add directory="CView" />
+					<Add directory="CInput" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -85,6 +87,7 @@
 					<Add directory="CGame" />
 					<Add directory="CMap" />
 					<Add directory="CView" />
+					<Add directory="CInput" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />

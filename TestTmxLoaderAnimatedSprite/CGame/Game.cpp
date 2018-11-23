@@ -1,4 +1,11 @@
+//
+// https://github.com/SFML/SFML/wiki/Tutorial:-Using-View
+//
+
+
 #include "Game.h"
+
+
 
 // Ctor
 CGame::CGame(std::string gameName, std::string mapPathName, std::string startingMapFileName):
@@ -10,7 +17,12 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
 	m_playerMovement(0.f, 0.f),
 	m_comingFromWrap(true),
-	m_disableInput(false)
+	m_disableInput(false),
+	m_minimapView(sf::FloatRect(m_renderWindow.getView().getCenter().x,
+								m_renderWindow.getView().getCenter().y,
+								200.f,
+								static_cast<float>(m_renderWindow.getSize().y*200.f/m_renderWindow.getSize().x)))
+
 {
 
 	tmx::setLogLevel(tmx::Logger::Info | tmx::Logger::Error);//set the debugging output mode
@@ -35,8 +47,42 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 	m_hudText.setCharacterSize(14);
 	m_hudBG.setSize(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)));
 	m_hudBG.setFillColor(sf::Color::Black);
-//TODO: Retrouver à qui ca appartient??
-//	(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)))
+
+
+
+
+
+//	m_fixedView = m_renderWindow.getView(); // The 'fixed' view will never change
+//
+//	m_standardView = m_fixedView; // The 'standard' view will be the one that gets always displayed
+//
+//	unsigned int size = 200; // The 'minimap' view will show a smaller picture of the map
+//	m_minimap(sf::FloatRect(	standard.getCenter().x,
+//									standard.getCenter().y,
+//									static_cast<float>(size),
+//									static_cast<float>(m_renderWindow.getSize().y*size/m_renderWindow.getSize().x)));
+//	minimap.setViewport(sf::FloatRect(	1.f-static_cast<float>(minimap.getSize().x)/m_renderWindow.getSize().x-0.02f,
+//										1.f-static_cast<float>(minimap.getSize().y)/m_renderWindow.getSize().y-0.02f,
+//										static_cast<float>(minimap.getSize().x)/m_renderWindow.getSize().x,
+//										static_cast<float>(minimap.getSize().y)/m_renderWindow.getSize().y));
+//	minimap.zoom(4.f);
+//
+//	// The 'left' and the 'right' view will be used for splitscreen displays
+//	sf::View left(sf::FloatRect(0.f, 0.f, static_cast<float>(m_renderWindow.getSize().x/2), static_cast<float>(m_renderWindow.getSize().y)));
+//	left.setViewport(sf::FloatRect(0.f, 0.f, 0.5, 1.f));
+//	sf::View right(sf::FloatRect(0.f, 0.f, static_cast<float>(m_renderWindow.getSize().x/2), static_cast<float>(m_renderWindow.getSize().y)));
+//	right.setViewport(sf::FloatRect(0.5, 0.f, 0.5, 1.f));
+//	right.move(100.f, 100.f); // The 'right' view should be set a bit diffrent to notice the difference
+//
+//	sf::RectangleShape miniback; // We want to draw a rectangle behind the minimap
+//	miniback.setPosition(minimap.getViewport().left*m_renderWindow.getSize().x-5, minimap.getViewport().top*m_renderWindow.getSize().y-5);
+//	miniback.setSize(sf::Vector2f(minimap.getViewport().width*m_renderWindow.getSize().x+10, minimap.getViewport().height*m_renderWindow.getSize().y+10));
+//	miniback.setFillColor(sf::Color(160, 8, 8));
+//
+//	sf::Text position;
+//	position.setString("<0, 0> - <0, 0>"); // The text will contain the position of the cursor
+//	position.setPosition(10.f, 10.f);
+//	position.setColor(sf::Color::White);
 
 }
 
@@ -215,6 +261,11 @@ void CGame::render()
 	m_renderWindow.draw(m_nunPlayer);
 	m_renderWindow.draw(m_hudBG, m_hudText.getTransform());
 	m_renderWindow.draw(m_hudText);
+//	m_renderWindow.setView(fixed); // Draw 'GUI' elements with fixed positions
+//    m_renderWindow.draw(position);
+//    m_renderWindow.draw(miniback);
+
+//    m_renderWindow.setView(m_minimapView); // Draw minimap
 	m_map.drawCameraInhibitRect(m_renderWindow);
 	m_map.drawLayer(m_renderWindow, tmx::MapLayer::Debug);//draw with debug information shown
 	m_renderWindow.display();
