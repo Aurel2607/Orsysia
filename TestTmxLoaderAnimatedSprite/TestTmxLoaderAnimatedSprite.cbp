@@ -29,6 +29,7 @@
 					<Add directory="CMap" />
 					<Add directory="CView" />
 					<Add directory="CInput" />
+					<Add directory="CMonster" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics-d" />
@@ -62,6 +63,7 @@
 					<Add directory="CMap" />
 					<Add directory="CView" />
 					<Add directory="CInput" />
+					<Add directory="CMonster" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -88,6 +90,7 @@
 					<Add directory="CMap" />
 					<Add directory="CView" />
 					<Add directory="CInput" />
+					<Add directory="CMonster" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -111,6 +114,8 @@
 		<Unit filename="CMap/Map.h" />
 		<Unit filename="CMap/WarpData.cpp" />
 		<Unit filename="CMap/WarpData.h" />
+		<Unit filename="CMonster/Monster.cpp" />
+		<Unit filename="CMonster/Monster.h" />
 		<Unit filename="CPlayer/Player.cpp" />
 		<Unit filename="CPlayer/Player.h" />
 		<Unit filename="CPlayer/TexteUp.cpp" />

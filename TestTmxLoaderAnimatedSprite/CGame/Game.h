@@ -8,6 +8,8 @@
 #include <tmx/Log.hpp>
 #include "Player.h"
 #include "Map.h"
+#include "Monster.h"
+#include <vector>
 
 class CGame
 {
@@ -26,8 +28,9 @@ private:
 	sf::RenderWindow m_renderWindow;
 	bool m_showDebug;
 
-	CMap 	m_map;
-	CPlayer m_nunPlayer;
+	CMap 					m_map;
+	CPlayer 				m_nunPlayer;
+	std::vector<CMonster> 	m_actualMonstersList;
 
 	// TODO (Aurel#1#): Ajouter à la Classe CHud
 	// HUD Text
@@ -53,7 +56,8 @@ private:
 
 private:
 	void processEvents(void);
-	void update(void);
+	void updatePlayer(void);
+	void updateMonsters(std::vector<CMonster>& vectMonster);
 	void render(void);
 
 private:
