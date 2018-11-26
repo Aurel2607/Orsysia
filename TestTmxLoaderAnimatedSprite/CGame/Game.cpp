@@ -18,6 +18,7 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 //	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/citizen1.png", m_screenDimensions / 2.f),
 //	m_nunPlayer(24, 32, CPlayer::speedHero, "sprites/Nun/Char/Nun Sex A.png", m_screenDimensions / 2.f),
 	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
+	m_sucub("Sucub", 56, 48, 4,	sf::Vector2f(8.f,218.f), sf::Vector2f(2.f,2.f), CMonster::speedNormal, "sprites/rcrAmrF.png",	m_screenDimensions / 2.f),
 	m_playerMovement(0.f, 0.f),
 	m_comingFromWrap(true),
 	m_disableInput(false),
@@ -38,14 +39,21 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 	// monster1 late Init
 	//------------------
 	sf::Vector2f monster1StartPosition = m_map.getWarpPointPosition("monster1");
-	m_actualMonstersList.push_back(CMonster(	"Sucub",
-												48, 48,
-												4,
-												sf::Vector2f(0,0),
-												sf::Vector2f(0,0),
-												CMonster::speedNormal,
-												"sprites/rcrAmrF.png",
-												monster1StartPosition));
+	m_sucub.setCenter(monster1StartPosition);
+//	m_actualMonstersList.push_back(CMonster(	"Sucub",
+//												48, 48,
+//												4,
+//												sf::Vector2f(0,0),
+//												sf::Vector2f(0,0),
+//												CMonster::speedNormal,
+//												"sprites/rcrAmrF.png",
+//												monster1StartPosition));
+//	printf("CGame::CGame - m_actualMonstersList.size: %d\r\n", m_actualMonstersList.size());
+//
+//	for (std::vector<CMonster>::iterator it = m_actualMonstersList.begin() ; it != m_actualMonstersList.end(); ++it)
+//	{
+//			printf("CGame::CGame - Monster '%s' : \r\n", it->getName().c_str());
+//	}
 
 	// m_renderWindow late init
 	//--------------------------
@@ -118,8 +126,10 @@ void CGame::run(void)
 	while(m_renderWindow.isOpen() == true)
 	{
 		processEvents();
-		updatePlayer();
-		updateMonsters(m_actualMonstersList);
+
+		sf::Time frameTime = m_frameClock.restart();
+		updatePlayer(frameTime);
+		updateMonsters(frameTime);
 		render();
 	}
 }
@@ -157,6 +167,9 @@ void CGame::processEvents(void)
 				break;
 			case sf::Keyboard::O:
 				m_nunPlayer.toggleEyes();
+				break;
+			case sf::Keyboard::S:
+				m_sucub.nextAnim();
 				break;
 			default: break;
 			}
@@ -205,9 +218,8 @@ void CGame::processEvents(void)
 }
 
 
-void CGame::updatePlayer()
+void CGame::updatePlayer(sf::Time& frameTime)
 {
-	sf::Time frameTime = m_frameClock.restart();
 
 	m_nunPlayer.play();
 
@@ -267,70 +279,10 @@ void CGame::updatePlayer()
 }
 
 
-void CGame::updateMonsters(std::vector<CMonster>& vectMonster)
+void CGame::updateMonsters(sf::Time& frameTime)
 {
-
-	for (std::vector<CMonster>::iterator it = vectMonster.begin() ; it != vectMonster.end(); ++it)
-	{
-		it->play();
-//
-//
-//		// update View
-//		sf::Vector2f cameraMovement(0.f, 0.f);
-//		sf::View view = m_renderWindow.getView();
-//		// if no key was pressed stop the animation
-//		if (m_noKeyWasPressed) {
-//			m_nunPlayer.stop();
-//		}else{
-//			CMap::interractionType_t inter = m_map.testInteraction(m_monster1, m_monsterMovement * frameTime.asSeconds());
-//			if(inter == CMap::interractionType_t::collision)
-//				{
-//				printf(" Collision\r\n");
-//				m_playerMovement = sf::Vector2f(0.f,0.f);
-//			}
-//			else if(inter == CMap::interractionType_t::warp)
-//			{
-//				if(m_comingFromWrap == false){
-//					CWarpData warpData = m_map.getWarpData();
-//					if(warpData.getMapToLoad() != ""){
-//						m_map.loadMap(warpData.getMapToLoad());
-//						m_nunPlayer.setCenter(m_map.getWarpPointPosition(warpData.getWarpPointName()));
-//						m_playerMovement = sf::Vector2f(0.f,0.f);
-//						printf(" Warping\r\n");
-//						m_comingFromWrap = true;
-//						m_disableInput = true;
-//					}
-//				}
-//			}
-//			else
-//			{
-//	//			printf(" None\r\n");
-//				m_comingFromWrap = false;
-//			}
-//			m_nunPlayer.move(m_playerMovement * frameTime.asSeconds());
-//			//On gère le scrolling
-//		}
-//		cameraMovement = centerScrolling(	m_map.getMapSize(),
-//											view,
-//											m_nunPlayer);
-//		m_renderWindow.setView(view);
-//
-//		m_noKeyWasPressed = true;
-//
-//		// update Player
-//		m_nunPlayer.update(frameTime);
-//
-//		// update HUD (fps, player position)
-//		float fpsCount = (1.f / frameTime.asSeconds());
-//		m_hudText.setString( 	"FPS:" + (std::to_string(fpsCount)).substr(0,5)
-//							+ " x:" + (std::to_string(m_nunPlayer.getPosition().x)).substr(0,5)
-//							+ " y:" + (std::to_string(m_nunPlayer.getPosition().y)).substr(0,5));
-//		m_hudText.move(cameraMovement);
-//		m_hudBG.setSize(sf::Vector2f((m_hudText.getGlobalBounds().width + 10), (m_hudText.getGlobalBounds().height +10)));
-	}
-
-
-
+	m_sucub.play();
+	m_sucub.update(frameTime);
 }
 
 
@@ -339,10 +291,10 @@ void CGame::render()
 	m_renderWindow.clear();
 	m_renderWindow.draw(m_map);
 	m_renderWindow.draw(m_nunPlayer);
-	for (std::vector<CMonster>::iterator it = m_actualMonstersList.begin() ; it != m_actualMonstersList.end(); ++it)
-	{
-		m_renderWindow.draw(*it);
-	}
+//	for (std::vector<CMonster>::iterator it = m_actualMonstersList.begin() ; it != m_actualMonstersList.end(); ++it)
+//	{
+		m_renderWindow.draw(m_sucub);
+//	}
 	m_renderWindow.draw(m_hudBG, m_hudText.getTransform());
 	m_renderWindow.draw(m_hudText);
 //	m_renderWindow.setView(fixed); // Draw 'GUI' elements with fixed positions

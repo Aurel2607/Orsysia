@@ -30,7 +30,8 @@ private:
 
 	CMap 					m_map;
 	CPlayer 				m_nunPlayer;
-	std::vector<CMonster> 	m_actualMonstersList;
+//	std::vector<CMonster> 	m_actualMonstersList;
+	CMonster				m_sucub;
 
 	// TODO (Aurel#1#): Ajouter à la Classe CHud
 	// HUD Text
@@ -56,8 +57,8 @@ private:
 
 private:
 	void processEvents(void);
-	void updatePlayer(void);
-	void updateMonsters(std::vector<CMonster>& vectMonster);
+	void updatePlayer(sf::Time& frameTime);
+	void updateMonsters(sf::Time& frameTime);
 	void render(void);
 
 private:

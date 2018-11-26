@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="1">
+ <tileset firstgid="1" source="tiles12.tsx"/>
+ <layer id="1" name="Ground" width="20" height="20" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJytlNENwzAIRNl/JLyFWaiqlEr09Q6nVT+QYsd+wBnIiFh/sLossf7VNnj0tXE+rz3a6z55aWyDVeD0cyfeivdY6uCvWo4qD/pW+Soe9SSra0l/S/D4Te0L97l2PBWTi1tpXPH5Ropd4TV28U2aU7uJ1zWZuKwFly95hbud0f+598jQNTj1qGKqOuj9y9hOfaf2vrVpHvSZdZenepLvwVp1M40xnvpV+XZ2mhmu/rqp93ruPwAA8zap
+  </data>
+ </layer>
+ <layer id="2" name="LowDec" width="20" height="20" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJxjYBjZgJuReLWcjBBMTzvxmUGOe6jhfnLMo6U6avuJGIAvDqkRv6OAeIAt/jkZseNRQF0AAAG/AOc=
+  </data>
+ </layer>
+ <layer id="3" name="Collision" width="20" height="20" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJzt08EVQDAURNE0I0gPRPRAQg+C9L/wtJC/479z7nZ2Y0xdDSxadOjhKrfeBozwmBAwC/YWrIhI2LAL9g5knLhwowj2tH+mv9HffKkHrbsOKQ==
+  </data>
+ </layer>
+</map>

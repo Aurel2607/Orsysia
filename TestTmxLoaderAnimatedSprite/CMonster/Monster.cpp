@@ -11,32 +11,58 @@ CMonster::CMonster(	std::string name,
 					int playerWidth,
 					int playerHeight,
 					int animatedFrameQty,
-					sf::Vector2f initialOffset,
 					sf::Vector2f offset,
+					sf::Vector2f gap,
 					float speed,
 					std::string spriteSheet,
 					sf::Vector2f center):
+	m_name(name),
     m_width(playerWidth),
     m_height(playerHeight),
     m_animatedFrameQty(animatedFrameQty),
-    m_initialOffset(initialOffset),
     m_offset(offset),
+    m_gap(gap),
     m_speed(speed),
-    m_animatedSprite(sf::seconds(0.2), false, true),
-    m_direction(direction_t::down),
-    m_directionHasChanged(false),
-    m_textUp(	center,
-				sf::Vector2f(xOffsetTextUp, yOffsetTextUp),
-				name)
+    m_animatedSprite(sf::seconds(0.2f), false, true)
 {
 	// Load Texture
 	if (!m_texture1.loadFromFile(spriteSheet)){
-		printf("Failed to load player spritesheet %s!\r\n", spriteSheet.c_str() );
+		printf("CMonster::CMonster - Failed to load player spritesheet %s!\r\n", spriteSheet.c_str() );
 		// TODO (Aurel#1#): Throw???
 	}
 
 	// Set current animation
-	m_pCurrentAnimation = &m_walkingAnimationDown;
+	setUpAnimation(	m_oralWithSuccubus,
+					4,
+					true,
+					56.f, 8.f, 2.f,
+					48.f, 218.f,
+					m_texture1);
+	setUpAnimation(	m_oralClimaxWithSuccubus,
+					5,
+					false,
+					56.f, 8.f, 2.f,
+					48.f, 282.f,
+					m_texture1);
+	setUpAnimation(	m_sexWithSuccubus,
+					6,
+					false,
+					56.f, 8.f, 2.f,
+					48.f, 348.f,
+					m_texture1);
+	setUpAnimation(	m_rougherSexWithSuccubus,
+					6,
+					false,
+					56.f, 8.f, 2.f,
+					48.f, 415.f,
+					m_texture1);
+	setUpAnimation(	m_rougherSexClimaxWithSuccubus,
+					8,
+					true,
+					56.f, 8.f, 2.f,
+					48.f, 480.f,
+					m_texture1);
+	m_pCurrentAnimation = &m_oralWithSuccubus;
 
 	// set up AnimatedSprite position
 	setCenter(center);
@@ -44,12 +70,12 @@ CMonster::CMonster(	std::string name,
 	// Player limit Rectangle
 	//------------------------
 
-	m_limitRectShape.setSize(sf::Vector2f(m_width, m_height));
-	m_limitRectShape.setFillColor(sf::Color::Transparent);
-	m_limitRectShape.setOutlineColor(sf::Color::Red);
-	m_limitRectShape.setOutlineThickness(2.f);
-	m_limitRectShape.setPosition(getCenter().x - getWidth()/2.f,
-								 getCenter().y - getHeight()/2.f);
+//	m_limitRectShape.setSize(sf::Vector2f(m_width, m_height));
+//	m_limitRectShape.setFillColor(sf::Color::Transparent);
+//	m_limitRectShape.setOutlineColor(sf::Color::Red);
+//	m_limitRectShape.setOutlineThickness(2.f);
+//	m_limitRectShape.setPosition(getCenter().x - getWidth()/2.f,
+//								 getCenter().y - getHeight()/2.f);
 
 }
 
@@ -59,31 +85,30 @@ CMonster::~CMonster()
 }
 
 
-void CMonster::setUpAnimation(   int playerWidth,    int playerWidthOffset,
-                                int playerHeight,   int playerHeightOffset,
+void CMonster::setUpAnimation(	AnimatedSprite::CAnimation& anim,
+								int frameQty,
+								bool frameReverse,
+								float XLength, float XOffset, float XGap,
+								float YLength, float YOffset,
                                 sf::Texture& texture)
 {
 	// Remove old frame
-    if(m_walkingAnimationDown.getSize() != 0)
-		m_walkingAnimationDown.resetFrames();
-    if(m_walkingAnimationLeft.getSize() != 0)
-		m_walkingAnimationLeft.resetFrames();
-    if(m_walkingAnimationRight.getSize() != 0)
-		m_walkingAnimationRight.resetFrames();
-    if(m_walkingAnimationUp.getSize() != 0)
-		m_walkingAnimationUp.resetFrames();
+    if(anim.getSize() != 0)
+		anim.resetFrames();
 
-    // Set up the animations for all four directions
-	m_walkingAnimationDown.setSpriteSheet(texture);
-	m_walkingAnimationLeft.setSpriteSheet(texture);
-	m_walkingAnimationRight.setSpriteSheet(texture);
-	m_walkingAnimationUp.setSpriteSheet(texture);
-	for(int i = 0; i < m_animatedFrameQty; i++){
-		m_walkingAnimationDown.addFrame(sf::IntRect((i * playerWidth + playerWidthOffset),  playerHeightOffset, playerWidth, playerHeight));
-		m_walkingAnimationLeft.addFrame(sf::IntRect((i * playerWidth + playerWidthOffset),	(playerHeight + playerHeightOffset), playerWidth, playerHeight));
-		m_walkingAnimationRight.addFrame(sf::IntRect((i * playerWidth + playerWidthOffset),	((2 * playerHeight) + playerHeightOffset), playerWidth, playerHeight));
-		m_walkingAnimationUp.addFrame(sf::IntRect((i * playerWidth + playerWidthOffset),    ((3 * playerHeight) + playerHeightOffset), playerWidth, playerHeight));
+    // Set up the animation
+	anim.setSpriteSheet(texture);
+	for(int i = 0; i < frameQty; i++){
+		anim.addFrame(sf::IntRect(	(i * (XLength + XGap) + XOffset), YOffset, XLength, YLength));
 	}
+
+	// If Reverse Frame Mode
+	if(frameReverse == true){
+		for(int i = frameQty-2 ; i > 0; i--){
+			anim.addFrame(sf::IntRect(	(i * (XLength + XGap) + XOffset), YOffset, XLength, YLength));
+		}
+	}
+
 }
 
 void CMonster::play()
@@ -100,53 +125,15 @@ void CMonster::move(sf::Vector2f movement)
 {
 	// Move Sprite
 	m_animatedSprite.move(movement);
-
-	// Move LimitRectShape
-	m_limitRectShape.move(movement);
-
-	// Move Texte Up
-    m_textUp.move(movement);
 }
 
 void CMonster::update(sf::Time time)
 {
-	// Si on a eu une mise à jour de la direction
-	if(m_directionHasChanged == true){
-		switch(m_direction){
-		case direction_t::down:
-			m_pCurrentAnimation = &m_walkingAnimationDown;
-			break;
-		case direction_t::up:
-			m_pCurrentAnimation = &m_walkingAnimationUp;
-			break;
-		case direction_t::left:
-			m_pCurrentAnimation = &m_walkingAnimationLeft;
-			break;
-		case direction_t::right:
-			m_pCurrentAnimation = &m_walkingAnimationRight;
-			break;
-		default:
-			break;
-		}
-		// Mise à jour de la direction effectuée
-		m_directionHasChanged = false;
-	}
 	m_animatedSprite.update(time);
-}
-
-void CMonster::setDirection(direction_t dir)
-{
-	// Si la direction actuelle est différente de l'ancienne,
-	if(m_direction != dir)
-		m_directionHasChanged = true; // Alors on a eu un changement de direction
-
-	m_direction = dir;
 }
 
 void CMonster::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(m_textUp);
-	target.draw(m_limitRectShape);
 	target.draw(m_animatedSprite, states);
 }
 
@@ -168,8 +155,33 @@ void CMonster::setCenter(const sf::Vector2f& center)
 	m_animatedSprite.setPosition(posToSet);
 
 	// LimitRectShape
-	m_limitRectShape.setPosition(posToSet);
+//	m_limitRectShape.setPosition(posToSet);
 
 	// Texte Up
-	m_textUp.setPosition(posToSet);
+//	m_textUp.setPosition(posToSet);
+}
+
+void CMonster::nextAnim(void)
+{
+	if(m_pCurrentAnimation == &m_oralWithSuccubus){
+		m_pCurrentAnimation = &m_oralClimaxWithSuccubus;
+		return;
+	}
+	if(m_pCurrentAnimation == &m_oralClimaxWithSuccubus){
+		m_pCurrentAnimation = &m_sexWithSuccubus;
+		return;
+	}
+	if(m_pCurrentAnimation == &m_sexWithSuccubus){
+		m_pCurrentAnimation = &m_rougherSexWithSuccubus;
+		return;
+	}
+	if(m_pCurrentAnimation == &m_rougherSexWithSuccubus){
+		m_pCurrentAnimation = &m_rougherSexClimaxWithSuccubus;
+		return;
+	}
+	if(m_pCurrentAnimation == &m_rougherSexClimaxWithSuccubus){
+		m_pCurrentAnimation = &m_oralWithSuccubus;
+		return;
+	}
+
 }

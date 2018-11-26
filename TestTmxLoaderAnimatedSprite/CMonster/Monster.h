@@ -28,15 +28,16 @@ public:
 				int playerHeight,
 				int animatedFrameQty,
 				sf::Vector2f initialOffset,
-				sf::Vector2f offset,
+				sf::Vector2f gap,
 				float speed,
 				std::string spriteSheet,
 				sf::Vector2f center);
 	virtual ~CMonster();
 
-	float   getSpeed(void) const {return m_speed;};
-    int     getWidth(void) const {return m_width;};
-    int     getHeight(void) const {return m_height;};
+	std::string getName(void) const {return m_name;};
+	float   	getSpeed(void) const {return m_speed;};
+    int     	getWidth(void) const {return m_width;};
+    int     	getHeight(void) const {return m_height;};
 
     void play();
     void stop();
@@ -46,44 +47,46 @@ public:
  	direction_t getDirection(void);
 
 protected:
+	std::string m_name;
 	int m_width;
     int m_height;
     int	m_animatedFrameQty;
-	sf::Vector2f m_initialOffset;
 	sf::Vector2f m_offset;
+	sf::Vector2f m_gap;
     float m_speed;
 
 private:
 	   	// Animation
     sf::Texture m_texture1;
     AnimatedSprite::CAnimatedSprite m_animatedSprite;
-   	AnimatedSprite::CAnimation m_walkingAnimationDown;
-    AnimatedSprite::CAnimation m_walkingAnimationUp;
-    AnimatedSprite::CAnimation m_walkingAnimationRight;
-    AnimatedSprite::CAnimation m_walkingAnimationLeft;
-    AnimatedSprite::CAnimation* m_pCurrentAnimation;
+   	AnimatedSprite::CAnimation m_oralWithSuccubus;
+   	AnimatedSprite::CAnimation m_oralClimaxWithSuccubus;
+    AnimatedSprite::CAnimation m_sexWithSuccubus;
+   	AnimatedSprite::CAnimation m_rougherSexWithSuccubus;
+   	AnimatedSprite::CAnimation m_rougherSexClimaxWithSuccubus;
+	AnimatedSprite::CAnimation* m_pCurrentAnimation;
 
  //-----------------------------------------------------------------------------
 //							Player Apparence
 //-----------------------------------------------------------------------------
 private:
-	direction_t 	m_direction;
-	bool 			m_directionHasChanged;
-
-    void setUpAnimation(int width,    int widthOffset,
-                        int height,   int heightOffset,
-                        sf::Texture& texture);
+    void setUpAnimation(AnimatedSprite::CAnimation& anim,
+						int frameQty,
+						bool frameReverse,
+						float XLength, float XOffset, float XGap,
+						float YLength, float YOffset,
+						sf::Texture& texture);
 
 
 //-----------------------------------------------------------------------------
 //							Player Drawing - Player limit Rectangle
 //-----------------------------------------------------------------------------
 private:
-	sf::RectangleShape m_limitRectShape;
+//	sf::RectangleShape m_limitRectShape;
 
 // TextUp
 private:
-	CTexteUp m_textUp;
+//	CTexteUp m_textUp;
 
 //-----------------------------------------------------------------------------
 //							Player Drawing
@@ -99,7 +102,7 @@ public:
 	const sf::Vector2f getCenter(void) const;
 	void setCenter(const sf::Vector2f& center);
 
-
+	void nextAnim(void);
 	sf::Rect<float> getRect() const;
 };
 

@@ -19,14 +19,15 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
 {
 	// Load Texture
 	if (!m_texture1.loadFromFile(spriteSheet)){
-		printf("Failed to load player spritesheet %s!\r\n", spriteSheet.c_str() );
+		printf("CPlayer::CPlayer - Failed to load player spritesheet %s!\r\n", spriteSheet.c_str() );
 		// TODO (Aurel#1#): Throw???
 	}
+
+	setEyesOpened(m_isEyesOpened);
 
 	// Set current animation
 	m_pCurrentAnimation = &m_walkingAnimationDown;
 
-	setEyesOpened(m_isEyesOpened);
 
 	// set up AnimatedSprite position
 	setPosition((position.x - (float)playerWidth) / 2.f,
