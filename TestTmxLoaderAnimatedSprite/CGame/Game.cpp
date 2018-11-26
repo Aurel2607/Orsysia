@@ -18,7 +18,7 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 //	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/citizen1.png", m_screenDimensions / 2.f),
 //	m_nunPlayer(24, 32, CPlayer::speedHero, "sprites/Nun/Char/Nun Sex A.png", m_screenDimensions / 2.f),
 	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
-	m_sucub("Sucub", 56, 48, 4,	sf::Vector2f(8.f,218.f), sf::Vector2f(2.f,2.f), CMonster::speedNormal, "sprites/rcrAmrF.png",	m_screenDimensions / 2.f),
+	m_sucub("Sucub", 56, 48, CMonster::speedNormal, "sprites/evilSchtroumpf.png"),
 	m_playerMovement(0.f, 0.f),
 	m_comingFromWrap(true),
 	m_disableInput(false),

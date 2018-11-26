@@ -7,65 +7,22 @@ const float CMonster::speedFast = 150.f;
 const float CMonster::xOffsetTextUp = -30.f;
 const float CMonster::yOffsetTextUp = -20.f;
 
-CMonster::CMonster(	std::string name,
+CMonster::CMonster(	const std::string& name,
 					int playerWidth,
 					int playerHeight,
-					int animatedFrameQty,
-					sf::Vector2f offset,
-					sf::Vector2f gap,
 					float speed,
-					std::string spriteSheet,
-					sf::Vector2f center):
+					const std::string & spriteSheet):
 	m_name(name),
     m_width(playerWidth),
     m_height(playerHeight),
-    m_animatedFrameQty(animatedFrameQty),
-    m_offset(offset),
-    m_gap(gap),
-    m_speed(speed),
     m_animatedSprite(sf::seconds(0.2f), false, true)
 {
 	// Load Texture
-	if (!m_texture1.loadFromFile(spriteSheet)){
-		printf("CMonster::CMonster - Failed to load player spritesheet %s!\r\n", spriteSheet.c_str() );
-		// TODO (Aurel#1#): Throw???
+	if (!m_texture.loadFromFile(spriteSheet)){
+		printf("CMonster::setUpAnimation - Failed to load player spritesheet %s!\r\n", spriteSheet.c_str() );
 	}
 
-	// Set current animation
-	setUpAnimation(	m_oralWithSuccubus,
-					4,
-					true,
-					56.f, 8.f, 2.f,
-					48.f, 218.f,
-					m_texture1);
-	setUpAnimation(	m_oralClimaxWithSuccubus,
-					5,
-					false,
-					56.f, 8.f, 2.f,
-					48.f, 282.f,
-					m_texture1);
-	setUpAnimation(	m_sexWithSuccubus,
-					6,
-					false,
-					56.f, 8.f, 2.f,
-					48.f, 348.f,
-					m_texture1);
-	setUpAnimation(	m_rougherSexWithSuccubus,
-					6,
-					false,
-					56.f, 8.f, 2.f,
-					48.f, 415.f,
-					m_texture1);
-	setUpAnimation(	m_rougherSexClimaxWithSuccubus,
-					8,
-					true,
-					56.f, 8.f, 2.f,
-					48.f, 480.f,
-					m_texture1);
-	m_pCurrentAnimation = &m_oralWithSuccubus;
 
-	// set up AnimatedSprite position
-	setCenter(center);
 
 	// Player limit Rectangle
 	//------------------------
@@ -79,6 +36,7 @@ CMonster::CMonster(	std::string name,
 
 }
 
+
 CMonster::~CMonster()
 {
 	//dtor
@@ -89,15 +47,14 @@ void CMonster::setUpAnimation(	AnimatedSprite::CAnimation& anim,
 								int frameQty,
 								bool frameReverse,
 								float XLength, float XOffset, float XGap,
-								float YLength, float YOffset,
-                                sf::Texture& texture)
+								float YLength, float YOffset)
 {
 	// Remove old frame
     if(anim.getSize() != 0)
 		anim.resetFrames();
 
     // Set up the animation
-	anim.setSpriteSheet(texture);
+	anim.setSpriteSheet(m_texture);
 	for(int i = 0; i < frameQty; i++){
 		anim.addFrame(sf::IntRect(	(i * (XLength + XGap) + XOffset), YOffset, XLength, YLength));
 	}

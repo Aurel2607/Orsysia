@@ -149,6 +149,8 @@
 		<Unit filename="CMap/Map.h" />
 		<Unit filename="CMap/WarpData.cpp" />
 		<Unit filename="CMap/WarpData.h" />
+		<Unit filename="CMonster/EvilSchtroumpf.cpp" />
+		<Unit filename="CMonster/EvilSchtroumpf.h" />
 		<Unit filename="CMonster/Monster.cpp" />
 		<Unit filename="CMonster/Monster.h" />
 		<Unit filename="CPlayer/Player.cpp" />

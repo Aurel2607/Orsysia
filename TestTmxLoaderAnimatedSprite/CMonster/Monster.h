@@ -23,15 +23,12 @@ public:
 
 
 public:
-	CMonster(	std::string name,
+	CMonster(	const std::string& name,
 				int playerWidth,
 				int playerHeight,
-				int animatedFrameQty,
-				sf::Vector2f initialOffset,
-				sf::Vector2f gap,
 				float speed,
-				std::string spriteSheet,
-				sf::Vector2f center);
+				const std::string & spriteSheet);
+
 	virtual ~CMonster();
 
 	std::string getName(void) const {return m_name;};
@@ -57,25 +54,21 @@ protected:
 
 private:
 	   	// Animation
-    sf::Texture m_texture1;
-    AnimatedSprite::CAnimatedSprite m_animatedSprite;
-   	AnimatedSprite::CAnimation m_oralWithSuccubus;
-   	AnimatedSprite::CAnimation m_oralClimaxWithSuccubus;
-    AnimatedSprite::CAnimation m_sexWithSuccubus;
-   	AnimatedSprite::CAnimation m_rougherSexWithSuccubus;
-   	AnimatedSprite::CAnimation m_rougherSexClimaxWithSuccubus;
-	AnimatedSprite::CAnimation* m_pCurrentAnimation;
+    sf::Texture m_texture;
 
  //-----------------------------------------------------------------------------
 //							Player Apparence
 //-----------------------------------------------------------------------------
-private:
+protected:
+    AnimatedSprite::CAnimatedSprite 		m_animatedSprite;
+    std::vector<AnimatedSprite::CAnimation> m_listAnimation;
+   	AnimatedSprite::CAnimation* 			m_pCurrentAnimation;
+
     void setUpAnimation(AnimatedSprite::CAnimation& anim,
 						int frameQty,
 						bool frameReverse,
 						float XLength, float XOffset, float XGap,
-						float YLength, float YOffset,
-						sf::Texture& texture);
+						float YLength, float YOffset);
 
 
 //-----------------------------------------------------------------------------
