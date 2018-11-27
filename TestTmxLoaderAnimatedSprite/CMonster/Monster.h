@@ -60,15 +60,17 @@ private:
 //							Player Apparence
 //-----------------------------------------------------------------------------
 protected:
-    AnimatedSprite::CAnimatedSprite 		m_animatedSprite;
-    std::vector<AnimatedSprite::CAnimation> m_listAnimation;
-   	AnimatedSprite::CAnimation* 			m_pCurrentAnimation;
+    AnimatedSprite::CAnimatedSprite 	m_animatedSprite;
+//    std::vector<AnimatedSprite::CAnimation> m_listAnimation;
+   	AnimatedSprite::CAnimation* 		m_pCurrentAnimation;
 
     void setUpAnimation(AnimatedSprite::CAnimation& anim,
 						int frameQty,
 						bool frameReverse,
 						float XLength, float XOffset, float XGap,
 						float YLength, float YOffset);
+
+	virtual void nextAnim(void) = 0;
 
 
 //-----------------------------------------------------------------------------
@@ -95,7 +97,6 @@ public:
 	const sf::Vector2f getCenter(void) const;
 	void setCenter(const sf::Vector2f& center);
 
-	void nextAnim(void);
 	sf::Rect<float> getRect() const;
 };
 

@@ -118,27 +118,3 @@ void CMonster::setCenter(const sf::Vector2f& center)
 //	m_textUp.setPosition(posToSet);
 }
 
-void CMonster::nextAnim(void)
-{
-	if(m_pCurrentAnimation == &m_oralWithSuccubus){
-		m_pCurrentAnimation = &m_oralClimaxWithSuccubus;
-		return;
-	}
-	if(m_pCurrentAnimation == &m_oralClimaxWithSuccubus){
-		m_pCurrentAnimation = &m_sexWithSuccubus;
-		return;
-	}
-	if(m_pCurrentAnimation == &m_sexWithSuccubus){
-		m_pCurrentAnimation = &m_rougherSexWithSuccubus;
-		return;
-	}
-	if(m_pCurrentAnimation == &m_rougherSexWithSuccubus){
-		m_pCurrentAnimation = &m_rougherSexClimaxWithSuccubus;
-		return;
-	}
-	if(m_pCurrentAnimation == &m_rougherSexClimaxWithSuccubus){
-		m_pCurrentAnimation = &m_oralWithSuccubus;
-		return;
-	}
-
-}

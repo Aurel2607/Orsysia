@@ -5,13 +5,14 @@
 
 class CEvilSchtroumpf : public CMonster
 {
-	public:
-		CEvilSchtroumpf();
-		virtual ~CEvilSchtroumpf();
+public:
+	CEvilSchtroumpf();
+	virtual ~CEvilSchtroumpf();
 
-	protected:
+	void nextAnim(void);
+protected:
 
-	private:
+private:
    	AnimatedSprite::CAnimation m_oralWithSuccubus;
    	AnimatedSprite::CAnimation m_oralClimaxWithSuccubus;
     AnimatedSprite::CAnimation m_sexWithSuccubus;

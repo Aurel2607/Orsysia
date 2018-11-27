@@ -2001,7 +2001,7 @@
 1543245810 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
 	"Game.h"
 
-1543233157 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
+1543311028 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
@@ -2009,7 +2009,7 @@
 	<tmx/Log.hpp>
 	"Player.h"
 	"Map.h"
-	"Monster.h"
+	"EvilSchtroumpf.h"
 	<vector>
 
 1490862087 e:\perso\devperso\orsysia\sfml-tmxloader-master\sfml-tmxloader-master\include\tmx\maploader.hpp
@@ -2121,10 +2121,10 @@
 1542817695 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cview\view.h
 	"../main.h"
 
-1543247421 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\monster.cpp
+1543309348 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\monster.cpp
 	"Monster.h"
 
-1543247769 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\monster.h
+1543310977 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\monster.h
 	<string>
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
@@ -2133,9 +2133,9 @@
 	"../main.h"
 	"TexteUp.h"
 
-1543247643 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\evilschtroumpf.cpp
+1543311120 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\evilschtroumpf.cpp
 	"EvilSchtroumpf.h"
 
-1543247677 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\evilschtroumpf.h
+1543309272 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\evilschtroumpf.h
 	"Monster.h"
 

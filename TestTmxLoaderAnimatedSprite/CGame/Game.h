@@ -8,7 +8,7 @@
 #include <tmx/Log.hpp>
 #include "Player.h"
 #include "Map.h"
-#include "Monster.h"
+#include "EvilSchtroumpf.h"
 #include <vector>
 
 class CGame
@@ -31,7 +31,7 @@ private:
 	CMap 					m_map;
 	CPlayer 				m_nunPlayer;
 //	std::vector<CMonster> 	m_actualMonstersList;
-	CMonster				m_sucub;
+	CEvilSchtroumpf			m_evilSchtroumpf;
 
 	// TODO (Aurel#1#): Ajouter à la Classe CHud
 	// HUD Text

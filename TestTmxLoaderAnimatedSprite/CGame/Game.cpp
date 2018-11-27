@@ -18,7 +18,7 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 //	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/citizen1.png", m_screenDimensions / 2.f),
 //	m_nunPlayer(24, 32, CPlayer::speedHero, "sprites/Nun/Char/Nun Sex A.png", m_screenDimensions / 2.f),
 	m_nunPlayer(48, 48, CPlayer::speedHero, "sprites/player.png", m_screenDimensions / 2.f),
-	m_sucub("Sucub", 56, 48, CMonster::speedNormal, "sprites/evilSchtroumpf.png"),
+	m_evilSchtroumpf(),
 	m_playerMovement(0.f, 0.f),
 	m_comingFromWrap(true),
 	m_disableInput(false),
@@ -39,7 +39,7 @@ CGame::CGame(std::string gameName, std::string mapPathName, std::string starting
 	// monster1 late Init
 	//------------------
 	sf::Vector2f monster1StartPosition = m_map.getWarpPointPosition("monster1");
-	m_sucub.setCenter(monster1StartPosition);
+	m_evilSchtroumpf.setCenter(monster1StartPosition);
 //	m_actualMonstersList.push_back(CMonster(	"Sucub",
 //												48, 48,
 //												4,
@@ -169,7 +169,7 @@ void CGame::processEvents(void)
 				m_nunPlayer.toggleEyes();
 				break;
 			case sf::Keyboard::S:
-				m_sucub.nextAnim();
+				m_evilSchtroumpf.nextAnim();
 				break;
 			default: break;
 			}
@@ -281,8 +281,8 @@ void CGame::updatePlayer(sf::Time& frameTime)
 
 void CGame::updateMonsters(sf::Time& frameTime)
 {
-	m_sucub.play();
-	m_sucub.update(frameTime);
+	m_evilSchtroumpf.play();
+	m_evilSchtroumpf.update(frameTime);
 }
 
 
@@ -293,7 +293,7 @@ void CGame::render()
 	m_renderWindow.draw(m_nunPlayer);
 //	for (std::vector<CMonster>::iterator it = m_actualMonstersList.begin() ; it != m_actualMonstersList.end(); ++it)
 //	{
-		m_renderWindow.draw(m_sucub);
+		m_renderWindow.draw(m_evilSchtroumpf);
 //	}
 	m_renderWindow.draw(m_hudBG, m_hudText.getTransform());
 	m_renderWindow.draw(m_hudText);
