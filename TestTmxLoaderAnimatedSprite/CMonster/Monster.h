@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "../AnimatedSprite/AnimatedSprite.h"
+#include "../AnimatedSprite/Animation.h"
 #include "../main.h"
 #include "TexteUp.h"
 
@@ -61,12 +62,11 @@ private:
 //-----------------------------------------------------------------------------
 protected:
     AnimatedSprite::CAnimatedSprite 	m_animatedSprite;
-//    std::vector<AnimatedSprite::CAnimation> m_listAnimation;
    	AnimatedSprite::CAnimation* 		m_pCurrentAnimation;
 
     void setUpAnimation(AnimatedSprite::CAnimation& anim,
 						int frameQty,
-						bool frameReverse,
+						AnimatedSprite::CAnimation::type_t animType,
 						float XLength, float XOffset, float XGap,
 						float YLength, float YOffset);
 
@@ -77,7 +77,7 @@ protected:
 //							Player Drawing - Player limit Rectangle
 //-----------------------------------------------------------------------------
 private:
-//	sf::RectangleShape m_limitRectShape;
+	sf::RectangleShape m_limitRectShape;
 
 // TextUp
 private:

@@ -15,7 +15,7 @@ CMonster::CMonster(	const std::string& name,
 	m_name(name),
     m_width(playerWidth),
     m_height(playerHeight),
-    m_animatedSprite(sf::seconds(0.2f), false, true)
+    m_animatedSprite(sf::seconds(0.2f))
 {
 	// Load Texture
 	if (!m_texture.loadFromFile(spriteSheet)){
@@ -27,12 +27,12 @@ CMonster::CMonster(	const std::string& name,
 	// Player limit Rectangle
 	//------------------------
 
-//	m_limitRectShape.setSize(sf::Vector2f(m_width, m_height));
-//	m_limitRectShape.setFillColor(sf::Color::Transparent);
-//	m_limitRectShape.setOutlineColor(sf::Color::Red);
-//	m_limitRectShape.setOutlineThickness(2.f);
-//	m_limitRectShape.setPosition(getCenter().x - getWidth()/2.f,
-//								 getCenter().y - getHeight()/2.f);
+	m_limitRectShape.setSize(sf::Vector2f(m_width, m_height));
+	m_limitRectShape.setFillColor(sf::Color::Transparent);
+	m_limitRectShape.setOutlineColor(sf::Color::Red);
+	m_limitRectShape.setOutlineThickness(2.f);
+	m_limitRectShape.setPosition(getCenter().x - getWidth()/2.f,
+								 getCenter().y - getHeight()/2.f);
 
 }
 
@@ -45,7 +45,7 @@ CMonster::~CMonster()
 
 void CMonster::setUpAnimation(	AnimatedSprite::CAnimation& anim,
 								int frameQty,
-								bool frameReverse,
+								AnimatedSprite::CAnimation::type_t animType,
 								float XLength, float XOffset, float XGap,
 								float YLength, float YOffset)
 {
@@ -58,13 +58,7 @@ void CMonster::setUpAnimation(	AnimatedSprite::CAnimation& anim,
 	for(int i = 0; i < frameQty; i++){
 		anim.addFrame(sf::IntRect(	(i * (XLength + XGap) + XOffset), YOffset, XLength, YLength));
 	}
-
-	// If Reverse Frame Mode
-	if(frameReverse == true){
-		for(int i = frameQty-2 ; i > 0; i--){
-			anim.addFrame(sf::IntRect(	(i * (XLength + XGap) + XOffset), YOffset, XLength, YLength));
-		}
-	}
+	anim.setAnimType(animType);
 
 }
 
@@ -82,6 +76,9 @@ void CMonster::move(sf::Vector2f movement)
 {
 	// Move Sprite
 	m_animatedSprite.move(movement);
+
+	// Move LimitRectShape
+	m_limitRectShape.move(movement);
 }
 
 void CMonster::update(sf::Time time)
@@ -92,6 +89,7 @@ void CMonster::update(sf::Time time)
 void CMonster::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_animatedSprite, states);
+	target.draw(m_limitRectShape);
 }
 
 
@@ -112,7 +110,7 @@ void CMonster::setCenter(const sf::Vector2f& center)
 	m_animatedSprite.setPosition(posToSet);
 
 	// LimitRectShape
-//	m_limitRectShape.setPosition(posToSet);
+	m_limitRectShape.setPosition(posToSet);
 
 	// Texte Up
 //	m_textUp.setPosition(posToSet);

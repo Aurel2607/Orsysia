@@ -38,7 +38,7 @@ namespace AnimatedSprite
     class CAnimatedSprite : public sf::Drawable, public sf::Transformable
     {
     public:
-        explicit CAnimatedSprite(sf::Time frameTime = sf::seconds(0.2f), bool paused = false, bool looped = true);
+        explicit CAnimatedSprite(sf::Time frameTime = sf::seconds(0.2f));
 
         void update(sf::Time deltaTime);
         void setAnimation(const CAnimation& animation);
@@ -47,12 +47,10 @@ namespace AnimatedSprite
         void play(const CAnimation& animation);
         void pause();
         void stop();
-        void setLooped(bool looped);
         void setColor(const sf::Color& color);
         const CAnimation* getAnimation() const;
         sf::FloatRect getLocalBounds() const;
         sf::FloatRect getGlobalBounds() const;
-        bool isLooped() const;
         bool isPlaying() const;
         sf::Time getFrameTime() const;
         void setFrame(std::size_t newFrame, bool resetTime = true);
@@ -63,10 +61,13 @@ namespace AnimatedSprite
         sf::Time m_currentTime;
         std::size_t m_currentFrame;
         bool m_isPaused;
-        bool m_isLooped;
+    	bool m_reversedPart;
         const sf::Texture* m_texture;
         sf::Vertex m_vertices[4];
 
+		void update_Once(void);
+		void update_Loop(void);
+		void update_Reverse(void);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     };

@@ -1553,10 +1553,10 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1541755815 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animatedsprite.cpp
+1543332782 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animatedsprite.cpp
 	"AnimatedSprite.h"
 
-1541755819 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animatedsprite.h
+1543332782 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animatedsprite.h
 	<SFML/Graphics/RenderTarget.hpp>
 	<SFML/System/Time.hpp>
 	<SFML/Graphics/Drawable.hpp>
@@ -1640,7 +1640,7 @@
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Transform.hpp>
 
-1541850860 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animation.h
+1543323538 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animation.h
 	<vector>
 	<SFML/Graphics/Rect.hpp>
 	<SFML/Graphics/Texture.hpp>
@@ -1664,10 +1664,10 @@
 1525808418 e:\perso\devperso\orsysia\sfml-2.5.1-windows-gcc-5.1.0-tdm-32-bit\sfml-2.5.1\include\sfml\window\export.hpp
 	<SFML/Config.hpp>
 
-1541850809 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animation.cpp
+1543323534 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\animatedsprite\animation.cpp
 	"Animation.h"
 
-1543232626 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
+1543323760 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.cpp
 	"Player.h"
 
 1542881815 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cplayer\player.h
@@ -1998,7 +1998,7 @@
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 
-1543245810 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
+1543329749 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.cpp
 	"Game.h"
 
 1543311028 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cgame\game.h
@@ -2121,21 +2121,22 @@
 1542817695 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cview\view.h
 	"../main.h"
 
-1543309348 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\monster.cpp
+1543324159 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\monster.cpp
 	"Monster.h"
 
-1543310977 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\monster.h
+1543324149 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\monster.h
 	<string>
 	<SFML/System.hpp>
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 	"../AnimatedSprite/AnimatedSprite.h"
+	"../AnimatedSprite/Animation.h"
 	"../main.h"
 	"TexteUp.h"
 
-1543311120 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\evilschtroumpf.cpp
+1543330347 source:e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\evilschtroumpf.cpp
 	"EvilSchtroumpf.h"
 
-1543309272 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\evilschtroumpf.h
+1543314938 e:\perso\devperso\orsysia\testtmxloaderanimatedsprite\cmonster\evilschtroumpf.h
 	"Monster.h"
 

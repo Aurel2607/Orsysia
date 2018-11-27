@@ -21,7 +21,12 @@
 //
 ////////////////////////////////////////////////////////////
 //
-// The sources were altered only for Naming Purpose.
+// The sources were altered:
+//	- for Naming Purpose
+// 	- to add a resetFrames method
+//	- to store some animation information like:
+//		- is the animation running at the setting
+//		- is the animation a loop animation
 
 #ifndef ANIMATION_INCLUDE
 #define ANIMATION_INCLUDE
@@ -34,6 +39,13 @@ namespace AnimatedSprite
 {
     class CAnimation
     {
+	public:
+		enum type_t{
+			once = 0,
+			loop,
+			reverse
+		};
+
     public:
         CAnimation();
 
@@ -44,9 +56,13 @@ namespace AnimatedSprite
         const sf::IntRect& getFrame(std::size_t n) const;
         void resetFrames(void);
 
-    private:
+        void 			setAnimType(const type_t type);
+        const type_t 	getAnimType(void) const;
+
+     private:
         std::vector<sf::IntRect> m_frames;
         const sf::Texture* m_texture;
+		type_t m_animType;
     };
 }
 #endif // ANIMATION_INCLUDE

@@ -62,5 +62,14 @@ namespace AnimatedSprite
         m_frames.clear();
     }
 
+	void CAnimation::setAnimType(const CAnimation::type_t type)
+	{
+		m_animType = type;
+	}
+
+	const CAnimation::type_t CAnimation::getAnimType(void) const
+	{
+		return m_animType;
+	}
 
 }

@@ -25,8 +25,13 @@
 
 namespace AnimatedSprite
 {
-    CAnimatedSprite::CAnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
-        m_animation(NULL), m_frameTime(frameTime), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL)
+    CAnimatedSprite::CAnimatedSprite(sf::Time frameTime) :
+        m_animation(NULL),
+        m_frameTime(frameTime),
+        m_currentFrame(0),
+        m_isPaused(true),
+        m_reversedPart(false),
+         m_texture(NULL)
     {
 
     }
@@ -36,6 +41,7 @@ namespace AnimatedSprite
         m_animation = &animation;
         m_texture = m_animation->getSpriteSheet();
         m_currentFrame = 0;
+        m_reversedPart = false;
         setFrame(m_currentFrame);
     }
 
@@ -51,8 +57,9 @@ namespace AnimatedSprite
 
     void CAnimatedSprite::play(const CAnimation& animation)
     {
-        if (getAnimation() != &animation)
+        if (getAnimation() != &animation){
             setAnimation(animation);
+        }
         play();
     }
 
@@ -66,11 +73,6 @@ namespace AnimatedSprite
         m_isPaused = true;
         m_currentFrame = 0;
         setFrame(m_currentFrame);
-    }
-
-    void CAnimatedSprite::setLooped(bool looped)
-    {
-        m_isLooped = looped;
     }
 
     void CAnimatedSprite::setColor(const sf::Color& color)
@@ -100,11 +102,6 @@ namespace AnimatedSprite
     sf::FloatRect CAnimatedSprite::getGlobalBounds() const
     {
         return getTransform().transformRect(getLocalBounds());
-    }
-
-    bool CAnimatedSprite::isLooped() const
-    {
-        return m_isLooped;
     }
 
     bool CAnimatedSprite::isPlaying() const
@@ -158,26 +155,72 @@ namespace AnimatedSprite
                 // reset time, but keep the remainder
                 m_currentTime = sf::microseconds(m_currentTime.asMicroseconds() % m_frameTime.asMicroseconds());
 
-                // get next Frame index
-                if (m_currentFrame + 1 < m_animation->getSize())
-                    m_currentFrame++;
-                else
-                {
-                    // animation has ended
-                    m_currentFrame = 0; // reset to start
-
-                    if (!m_isLooped)
-                    {
-                        m_isPaused = true;
-                    }
-
-                }
+				switch(m_animation->getAnimType())
+				{
+					case CAnimation::type_t::once:
+						printf("CAnimatedSprite::update - Once\r\n");
+						update_Once();
+						break;
+					case CAnimation::type_t::loop:
+						printf("CAnimatedSprite::update - loop\r\n");
+						update_Loop();
+						break;
+					case CAnimation::type_t::reverse:
+						printf("CAnimatedSprite::update - reverse\r\n");
+						update_Reverse();
+						break;
+					 default:
+						break;
+				}
 
                 // set the current frame, not reseting the time
+				printf("m_currentFrame - %d\r\n", m_currentFrame);
                 setFrame(m_currentFrame, false);
             }
         }
     }
+
+	void CAnimatedSprite::update_Once(void)
+	{
+		// get next Frame index
+		if (m_currentFrame + 1 < m_animation->getSize()){
+			m_currentFrame++;
+		}else{
+			m_isPaused = true;
+		}
+	}
+
+	void CAnimatedSprite::update_Loop(void)
+	{
+		// get next Frame index
+		if (m_currentFrame + 1 < m_animation->getSize()){
+			m_currentFrame++;
+		}else{
+			// animation has ended
+			m_currentFrame = 0; // reset to start
+		}
+	}
+
+	void CAnimatedSprite::update_Reverse(void)
+	{
+		printf("CAnimatedSprite::update_Reverse - %d\r\n", m_currentFrame);
+	   // Partie de l'anim pas en reverse
+		if(m_reversedPart == false){
+			m_currentFrame++;
+			if(m_currentFrame+1 >= m_animation->getSize()){
+				m_reversedPart = true;
+			}
+		}
+		// Partie de l'anim en reverse
+		else{
+			m_currentFrame--;
+			if(m_currentFrame <= 0){
+				m_reversedPart = false;
+			}
+		}
+	}
+
+
 
     void CAnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {

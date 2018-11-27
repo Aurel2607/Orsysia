@@ -281,7 +281,6 @@ void CGame::updatePlayer(sf::Time& frameTime)
 
 void CGame::updateMonsters(sf::Time& frameTime)
 {
-	m_evilSchtroumpf.play();
 	m_evilSchtroumpf.update(frameTime);
 }
 

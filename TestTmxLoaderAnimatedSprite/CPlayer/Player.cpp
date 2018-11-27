@@ -10,7 +10,7 @@ CPlayer::CPlayer(int playerWidth, int playerHeight, float speed, std::string spr
     m_playerHeight(playerHeight),
     m_speed(speed),
     m_isEyesOpened(true),
-    m_animatedSprite(sf::seconds(0.2), false, true),
+    m_animatedSprite(sf::seconds(0.2)),
     m_direction(direction_t::down),
     m_directionHasChanged(false),
     m_textUp(	position,
